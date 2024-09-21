@@ -1,12 +1,15 @@
 #/home/tarotoyota/start_garnish_period.py
+import agent_output
 from agent_output import coloring
+from dataclasses import dataclass, field
+from typing import List, ClassVar
 
-tables=[]
+tables=[] # all tables will be appended here.
 
 def tablize(name, tag, usage_ex, item):
     table = f"""
     <table>
-    <tr><th colspan= "2"> {name}                        </th></tr>
+    <tr><th colspan= "2" id="th_lime"> {name}                        </th></tr>
     <tr><th>TAG         </th><td> {tag}                 </td></tr>
     <tr><th>USAGE EX.   </th><td> {usage_ex}            </td></tr>
     <tr><th>ITEM        </th><td> {'<br>'.join(item)}   </td></tr>
@@ -14,19 +17,348 @@ def tablize(name, tag, usage_ex, item):
     """
     return table
 
+######################################################################################
+
+
+
+
+# for i in stress_make:
+#  print("Bob says : Now I understand why your {i}.")
+
+# The lines in the stress_make list are uttered by Bob in the sitcom when he meets a crazy person.
+# Each line must be a "condition that appears harmless or beneficial but is actually caused by a psychological problem."
+# Append 5 new lines in stress_make in English.  I will run your response through the eval function so please do not include unnecessary characters in your response.
+
+
+stress_make=[
+ "child is trying to become a counselor" # Most people who aspire to become psychologists or counselors are people who have problems..
+,"child is short" # Stress makes children short.
+,"child became independent so early" # Stressful home makes children independent early.
+,"child is interested in politics"
+,"child is interested in trains"
+,"child likes animals more than people"
+,"child loves volunteering"
+,"child doesn't cry at all"
+,"child is extremely strict about rules"
+,"child often plays with younger children"
+,"child never had a rebellious phase"
+
+,"child is an avid reader beyond their years"
+,"child is obsessed with cleanliness"
+,"child is overly mature for their age"
+,"child has an unusually strong sense of justice"
+,"child is always eager to help others"
+]
+
+stress_make+=[
+ "child speaks in third person"
+,"child insists on wearing a helmet indoors"
+,"child collects rocks and calls them their 'pets'"
+,"child is obsessed with even numbers"
+,"child only eats foods that start with the letter 'P'"
+]
+
+table_stress_make=f"""
+    <table id="stress_make">
+    <tr><th colspan="2" id="th_lime">stress_make                                                                                                     </th></tr>
+    <tr><th>Tag         </th><td> AtoB, BtoA, Time Lag Mentionable                                                                      </td></tr>
+    <tr><th rowspan="2">f       </th>  <td>Ali's {{ITEM}}. -(lag)-> Bob is annoyed by Ali and says: Now I understand why your {{ITEM}}. </td></tr>
+                                            <td>Bob's {{ITEM}}. -(lag)-> Ali is annoyed by Bob and says: Now I understand why your {{ITEM}}. </td></tr>
+    <tr><th>ITEM        </th><td> {stress_make}                                                                                         </td></tr>
+    </table>
+"""
+
+tables.append(coloring(table_stress_make))
+
+###################################################################################################
+# 20240919 10:04
+
+@dataclass
+class Reason:
+    ALL_REASON: ClassVar[List['Reason']] = []
+    reason_name:str
+    reason_item:list
+    def __post_init__(self):
+        Reason.ALL_REASON.append(self)
+    @classmethod
+    def reason_table(cls):
+        col=[]
+        reason_once = ["I have built a relationship of trust with you.", "I feel like talking about it."]
+        for i in cls.ALL_REASON:
+            col.append(f"<tr><td>{i.reason_name}</td><td>{i.reason_item}</td></tr>")
+        table_reason=f"""
+        <table id="reason">
+        <tr><th colspan="2" id="th_lime">reason                                      </th></tr>
+        <tr><th>Tag                 </th><td>AtoB, Time Lag Mentionable </td></tr>
+        <tr><th rowspan="2">f       </th><td>Ali: I'll tell you the reason for {{reason_name}} {{reason_once}}. -(lag)> Ali: {{reason_item}} -> Bob: Why now?                       </th></tr>
+                                         <td>Bob: What is the reason for {{other_phenomenon_x}}? -> Ali: {{reason_item}} -> Bob: I didn't ask the reason for the {{reason_name}}.   </th></tr>
+        <tr><th>reason_name         </th><th>reason_item                </th></tr>
+        {", ".join(col)}
+        <tr><th colspan="2">reason_once                                 </th></tr>
+        <tr><td colspan="2">{reason_once}                               </td></tr>
+
+        </table>"""
+        return table_reason
+
+reason_divorce = Reason("divorce", ["The reason is that I stole my wife's stepchild's pants."])
+
+tables.append(coloring(Reason.reason_table()))
+
+######################################################################################
+
+# A strong man has joined the team. The strong man says to his teammate:
+one_sided_0 = ["It will be one-sided", "The gap will continue to widen", "The balance of power was upset", "The winner and loser are now decided", "This match is already over", "It's not even going to be close", "It's going to be a landslide win"]
+# Extend 5 new lines without any explanations. I'll run your response with eval function so don't include unnecessary characters in your response. Start answer with ```python.
+
+
+# A strong man has joined the team. The teammate says to the strong man:
+one_sided_1 = ["Can we keep this gap?", "Are we safe with this advantage?", "Should we play defensively now?", "How long can we maintain this lead?"]
+# Extend 5 new lines without any explanations. I'll run your response with eval function so don't include unnecessary characters in your response. Start answer with ```python.
+
+
+one_sided_table =f"""
+<table id="one_sided">
+<tr><th colspan="2" id="th_lime">one_sided                                                               </th></tr>
+<tr><th>Tag                     </th><td>AtoB                                               </td></tr>
+<tr><th>Trriger                 </th><td>The assigned b3scene must be some kind of competition or battle.                </td></tr>
+<tr><th rowspan="2">f           </th><td>Ali: {{one_sided_0}} - Bob: I agree. Thanks to you.</td></tr>
+                                     <td>Ali: {{one_sided_1}} - Bob: I agree. Thanks to you.</td></tr>
+<tr><th>one_sided_0             </th><td>{one_sided_0}                                      </td></tr>
+<tr><th>one_sided_1             </th><td>{one_sided_1}                                      </td></tr>
+</table>
+"""
+
+
+tables.append(coloring(one_sided_table))
+######################################################################################
+
+
+
+
+
+
+
+######################################################################################
+# ノミにも感情あるんだ
+
+
+# Inevitability of disclosure(発言必然性)
+#  自慢 : Envy? I bought this last week. It was expensive.
+#  命令 : I have to try not to get it dirty. I bought this last week. It was expensive.
+
+# Bottom
+#                   reveal                      dont
+#  part time worker {part_time_worker.reveal}   {part_time_worker.dont}
+
+
+# Bottom dont
+# Sad_past dont
+# Stereo dont
+# Pressure dont
+
+
+# 今は養育費だけで生活してます
+# 昨日入れたんだ 40歳になってタトゥー入れたん？
+
+
+# できねーだろ
+#  養育費でタトゥー入れる奴
+#   爆弾解除
+#   世界変えれねーだろ
+
+'''
+@dataclass # Define 5 new BinaryLagMention instance without any explanations. I'll run your response with eval function so don't include unnecessary characters in your response. Start answer with ```python. For each instance you create, please include a comment stating which existing instance it is modeled after.
+class BinaryLagMention:
+    ALL_BINARYLAGMENTION: ClassVar[List['BinaryLagMention']] = []
+    fact1:str
+    fact1_jokenized:str
+    fact2:str
+    fact2_jokenized:str
+    lagmention:str
+    def __post_init__(self):
+        BinaryLagMention.ALL_BINARYLAGMENTION.append(self)
+        for i in BinaryLagMention.ALL_BINARYLAGMENTION:
+            print(f"""<table>
+            <tr><th>fact1</th><td>{self.fact1}</td></tr>
+            <tr><th>fact1_jokenized</th><td>{self.fact1_jokenized}</td></tr>
+            <tr><th>fact2</th><td>{self.fact2}</td></tr>
+            <tr><th>fact2_jokenized</th><td>{self.fact2_jokenized}</td></tr>
+            <tr><th>lagmention</th><td>{self.lagmention}</td></tr>
+            </table>""")
+
+tattoo=BinaryLagMention(
+      "Ali got a tattoo."               , "Ali got a tattoo after he turned 40. It's lame to aspire to punk when you're older."
+    , "Ali receives child support."     , "Ali says: I feel like the child support money I withdrew from the ATM is smelly."
+    , "Did you get a tattoo with child support money?"
+    )
+
+picking_up=(
+      "Ali is picking up college students on Tiktok."   , "Ali says: The easiest one is the women who comment on conspiracy theory videos."
+    , "Ali's wife died last week."                      , "Ali says: How long must pass since my wife's death before I can take my ring off?"
+    , "Did you start picking up girls on Tiktok right after your wife died?"
+    )
+
+call_girl=BinaryLagMention(
+      "Ali called a call girl to his house."    , "Ali told the call girl about his dream. Ali says: But she made fun of my dream, so I told her, 'What does a call girl know?' and sent her away."
+    , "Ali lives at his at his parents' home."  , "Ali still lives at his parents' home despite being middle-aged."
+    , "Did you call a call girl to your parents' house?"
+    )
+
+parents_home=BinaryLagMention(
+      "Ali lives in a one-room apartment."      , "Ali lives in a one-room apartment despite being middle-aged."
+    , "Ali lives at his at his parents' home."  , "Ali still lives at his parents' home despite being middle-aged."
+    , "Is your parents' home a one-room apartment?"
+    )
+
+car_sex=BinaryLagMention(
+      "Ali had sex in his car." , "Ali had sex in a car the day before her son's entrance exam."
+    , "Ali only owns a moped."  , "Despite being middle-aged, Ali only owns a moped."
+    , "Did you have sex in a moped?"
+    )
+
+'''
+
+
+
+
+list_dirty_money = ["child support money", "unemployment benefits", "life insurance proceeds", "welfare money", "divorce alimony", "grandma's pension"]
+
+dirty_money_accept=[ # In a sitcom. The lines Ali says when he accepts tainted money. Extend 10 new lines in this list in English, not Japanese. I'll run your response with eval function so don't include unnecessary characters in your response. Start answer with ```python. Only use child support money, unemployment benefits, life insurance proceeds, welfare money, divorce alimony and grandma's pension. The existing lines below are correct, so you have to mimic them.
+  "child support money      </th><td>I feel like the child support money I withdrew from the ATM is smelly." # TypeFeelLike
+, "divorce alimony          </th><td>Benjamin Franklin of divorce alimony money is not smiling as much as usual." # TypeFeelLike
+, "unemployment benefits    </th><td>The meals I order with my unemployment insurance money seem to be larger than usual." # TypeFeelLike
+, "unemployment benefits    </th><td>Any movie is fun when watched on unemployment benefits." # TypeFeelLike
+, "life insurance proceeds  </th><td>I feel like the stocks I invest in with life insurance proceeds are more volatile." # TypeFeelLike
+, "unemployment benefits    </th><td>I feel like the champagne I buy with unemployment benefits more bubbles." # TypeFeelLike
+, "child support money      </th><td>I feel like the toys I buy with child support money break faster." # TypeFeelLike
+, "child support money      </th><td>The ice cream I buy with child support money melts faster than usual." # TypeFeelLike
+, "life insurance proceeds  </th><td>The garden I planted with life insurance proceeds seems to grow unnaturally fast." # TypeFeelLike
+, "child support money      </th><td>The clothes I buy with child support money feel tighter." # TypeFeelLike
+]
+
+dirty_money_accept+=[ # In a sitcom. The lines Ali says when he accepts tainted money. Extend 10 new lines in this list in English, not Japanese. I'll run your response with eval function so don't include unnecessary characters in your response. Start answer with ```python. Only use child support money, unemployment benefits, life insurance proceeds, divorce alimony and grandma's pension. The existing lines below are correct, so you have to mimic them.
+  "life insurance proceeds  </th><td>I wonder how my face look when I pay my mother's life insurance premiums with my father's life insurance proceeds." # TypeHowLook
+, "child support money      </th><td>What kind of face should I make when buying condoms with my child support money?" # TypeHowLook
+, "divorce alimony          </th><td>I wonder how my face looks when I'm buying engagement rings with my divorce alimony." # TypeHowLook
+, "grandma's pension        </th><td>I wonder how my face looks when I'm tipping with grandma's pension." # TypeHowLook
+, "grandma's pension        </th><td>How should my face look when I'm purchasing anti-aging cream with grandma's pension money?" # TypeHowLook
+, "grandma's pension        </th><td>What's the correct facial expression to use when doing tricks on a skateboard bought with child support money?" # TypeContrast
+]
+
+dirty_money_accept+=[ # In a sitcom. The lines Ali says when he accepts tainted money. Extend 10 new lines in this list in English, not Japanese. I'll run your response with eval function so don't include unnecessary characters in your response. Start answer with ```python. Only use child support money, unemployment benefits, life insurance proceeds, divorce alimony and grandma's pension. The existing lines below are correct, so you have to mimic them.
+  "grandma's pension        </th><td>I can concentrate more than usual when playing blackjack using my grandmother's pension." # TypeThanUsual
+, "life insurance proceeds  </th><td>When I play gambling chess using my grandmother's life insurance money, I tend to attack earlier than usual." # TypeThanUsual
+]
+
+dirty_money_accept+=[ # In a sitcom. The lines Ali says when he accepts tainted money. Extend 10 new lines in this list in English, not Japanese. I'll run your response with eval function so don't include unnecessary characters in your response. Start answer with ```python. Only use child support money, unemployment benefits, life insurance proceeds, divorce alimony and grandma's pension. The existing lines below are correct, so you have to mimic them.
+  "divorce alimony          </th><td>Please stay with me. I'll boosting Tinder with divorce alimony from my ex-wife now." # TypeContrast
+, "unemployment benefits    </th><td>Yesterday I bought a crown avatar with my unemployment benefits." # TypeContrast
+]
+
+dirty_money_accept+=[ # In a sitcom. The lines Ali says when he accepts tainted money. Extend 10 new lines in this list in English, not Japanese. I'll run your response with eval function so don't include unnecessary characters in your response. Start answer with ```python. Only use child support money, unemployment benefits, life insurance proceeds, divorce alimony and grandma's pension. The existing lines below are correct, so you have to mimic them.
+  "child support money      </th><td>The gum I buy to break the child support bill is accumulating on my dashboard." # TypeOther
+]
+
+col_dirty_money=[]
+for i in dirty_money_accept:
+    col_dirty_money.append(f"<tr><th>{i}</td></tr>")
+
+table_dirty_money=f"""<table>
+<tr><th colspan="2">table_dirty_money</th></tr>
+<tr><th>dirty_money</th><th>Ali says</th></tr>
+{", ".join(col_dirty_money)}
+</table>
+"""
+
+tables.append(table_dirty_money)
+
+
+assign_neet_dirty_money = [
+      "I'm working at {neet} on the side."
+    , "I have to hurry because I have the night shift at {neet} tomorrow."
+    , "Enviable? I just bought it because I got the {dirty_money} yesterday."
+    ]
+
+assign_neet_part_time_job_worker=[
+     "Do you envy me? I splurged on it with my part-time job money."
+    ,"I have to hurry because I have the night shift at {neet} tomorrow."
+    ]
+
+
+
+
+
+
+
+"""<table>
+<tr><th>Assignment of list_neet or list_dirty_money to Ali</th><td>{assign_neet_dirty_money}</td></tr>
+
+
+
+"""
+
+
+
+
+"""
+
+**Switch, Bulb, Activation, Turning on
+When the fact that Ali is a NEET is presented, fline_neet, fline_desura, and fline_dirty_money will be activated.
+This is expressed as, "the fact is the switch for the three flines," "the three flines are the bulb for the fact," and "turning on the fact activates the three flines."
+
+
+
+
+"""
+
+# いじらめられてた理由がわかる
+# フランスピアノ: クレーマー, セルライトスパ: ぞな お馴染みじゃないんだ
+#
+
+
+
+
+lame_40=[# Things that are lame to start when you're 40
+  "Ali got his first tattoo at age 40."
+, "Ali start smoking"
+    ]
+
+
+'''
+
+40になってからやるとダサい事=[]
+養育費のような汚れた金=[]
+
+<th> action1    </th><td>40になってからやるとダサい事
+<th> money1     </th><td>養育費のような汚れた金
+<th> lagmention </th><td> 貴方はmoney1でaction1したのですか？
+'''
+# "Have you become bad-tempered because of mafia movies?"
+
+
+
+# 娘癌なのにパチンコ来たん？
+
+
+
 
 
 ###################################################################################################
+###################################################################################################
+# for i in list_a:
+#   print(f"comedy script : It doesn't suit you. Your current state is like {i}")
 
+list_a = [ # Extend 10 new items to list_a in English, not Japanese. I will run your reply through the eval function so don't include any unnecessary characters in your reply. Start answer with ```python. Don't make up neologisms.
+ "an ugly woman wearing a ribbon"
+,"a runt is muscular"
+,"a runt wearing a streetwear"
+]
+###################################################################################################
 # icause    : icause_adhd, icause_milk
 # isympton  : isympton
 
-tsuyokumo=[
- "({hypo_i}である上に)強くもない"
-,"(バイトであり)社員でもない"
-,"(ホールであり)キッチンでもない"
-,""
-]
+
+
 
 megezu=[
  "{hypo_i}になってもめげず"
@@ -678,38 +1010,7 @@ tables.append(tablize(
     ,period_nullary
 ))
 ###################################################################################################
-fsen_hsi=[ # Add 20 new English sentences. hyper stands for hypernym, hypo_s stands for hyponym superior, hypo_i stands for hyponym inferior. I will run your response through the eval function so please do not include unnecessary characters in your response.
- "Ali: It's hard to succeed as a {hypo_s}, so I became a {hypo_i}. - Bob: It's even harder to succeed as a {hypo_i}." # si + i
-,"Ali: I'm a failure as a {hyper}. - Bob: A {hypo_i} is not a {hyper}." # h + ih
-,"Ali: I want to quit being a {hyper}. - Bob: A {hypo_i} is not a {hyper}." # h + ih
-,"Ali: I fulfilled my dream of becoming a {hyper} - Bob: a {hypo_i} is not a {hyper}." # h + ih
-,"Ali: I was told that I was suited to be a {hypo_i}. - Bob: People who are suited to be {hypo_i} are not suited to be {hyper}." # i + ih
-,"Ali: I'm embarrassed by this failure as a {hypo_i}. - Bob: Isn't it more embarrassing to be a {hypo_i}?" # i + i
-,"Ali: I'm embarrassed by this failure as a {hypo_i}. - Bob: Being a {hypo_i} is a failure." # i + i
-,"Ali: I don't want to lose to other {hypo_i}. - Bob: You're already losing just by being a {hypo_i}." # i + i
-,"Ali: Maybe I don't have the talent for {hyper}. - Bob: You're {hypo_i} because you don't have the talent for {hyper}." # h + ih
-,"Ali: I'm thinking of giving up my career as a {hypo_i}. - Bob: Why not aim for becoming a {hyper} instead?" # i + h
-,"Ali: I feel like I'm wasting my potential as a {hypo_i}. - Bob: You could always strive to become a {hyper}." # i + h
-,"Ali: I want to be a {hyper}. Now, I'm a {hypo_i}. - Bob: That's great, you can be a {hyper} someday." # hi + h
-,"Ali: I'm struggling as a {hypo_i}. - Bob: Have you considered aiming higher, like becoming a {hyper}?" # i + h
-,"Ali: Being a {hypo_i} is tough. - Bob: That's why you should aspire to be a {hyper}." # i + h
-,"Ali: I'm thinking of quitting my job as a {hypo_i}. - Bob: Instead of quitting, why not work towards becoming a {hyper}?" # i + h
-,"Ali: I've been a {hypo_i} for so long, I'm not sure I can be anything else. - Bob: Don't limit yourself, you could become a {hyper}." # i + h
-,"Ali: I enjoy being a {hypo_i}, but I feel there's more I could do. - Bob: Have you considered the possibilities as a {hyper}?" # i + h
-]
 
-fsen_hsi+=[
- "Ali: I was told that I was suited to be a {hypo_i}. - Bob: Perhaps it is an insult."
-,"Ali: My parents wanted me to be a {hyper}. Now, I'm a {hypo_i}. - Bob: It's not too late to fulfill their wishes."
-    ]
-
-tables.append(tablize(
-    "fsen_hsi"
-    ,"AtoB, UVL-joke laying, garnish"
-    ,"Too many"
-    ,fsen_hsi
-))
-###################################################################################################
 
 
 # Ali: Which is more unbelievable, me and {hypo_s}? - Bob: You.
@@ -1104,58 +1405,6 @@ tables += table_er_coffee
 ###################################################################################################
 
 
-# for i in stress_make:
-#  print("Bob says : Now I understand why your {i}.")
-
-# The lines in the stress_make list are uttered by Bob in the sitcom when he meets a crazy person.
-# Each line must be a "condition that appears harmless or beneficial but is actually caused by a psychological problem."
-# Append 5 new lines in stress_make in English.  I will run your response through the eval function so please do not include unnecessary characters in your response.
-
-
-stress_make=[
- "child is trying to become a counselor" # Most people who aspire to become psychologists or counselors are people who have problems..
-,"child is short" # Stress makes children short.
-,"child became independent so early" # Stressful home makes children independent early.
-,"child is interested in politics"
-,"child is interested in trains"
-,"child likes animals more than people"
-,"child loves volunteering"
-,"child doesn't cry at all"
-,"child is extremely strict about rules"
-,"child often plays with younger children"
-,"child never had a rebellious phase"
-
-,"child is an avid reader beyond their years"
-,"child is obsessed with cleanliness"
-,"child is overly mature for their age"
-,"child has an unusually strong sense of justice"
-,"child is always eager to help others"
-]
-
-stress_make+=[
- "child speaks in third person"
-,"child insists on wearing a helmet indoors"
-,"child collects rocks and calls them their 'pets'"
-,"child is obsessed with even numbers"
-,"child only eats foods that start with the letter 'P'"
-]
-
-table_stress_make=[f"""
-    <table>
-    <tr><th colspan="2">stress_make                                                 </th></tr>
-    <tr><th>Tag         </th><td> BtoA, laying, garnish   </td></tr>
-    <tr><th>Usage ex.   </th><td> うしろシティ:病院                                 </td></tr>
-    <tr><th>Template    </th><td> Ali: My {{item}}. - Bob: Now I understand why your {{item}}</td></tr>
-    <tr><th>Item        </th><td> {'<br>'.join(stress_make)}                        </td></tr>
-    </table>
-"""]
-
-
-# for i in stress_make:
-#  print("Ali says : Recentry my {i}.")
-
-#生成可
-###################################################################################################
 
 monk_kick=[ # The lines in monk_kick are lines uttered by an inferior man in a sitcom. Extend 10 new items in English, not Japanese. I will run your response through the eval function so please do not include unnecessary characters in your response.
  "I've been kicked by a famous Buddhist monk."
