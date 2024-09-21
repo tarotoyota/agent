@@ -1,13 +1,15 @@
 from dataclasses import dataclass, field
 from typing import List, ClassVar
 
+# 教師データ: (さらば青春の光: パワースポット)
+
 @dataclass
 class Coping:
     ALL_COPING: ClassVar[List['Coping']] = []
     coping:str
     coping_adj:list
     access:list
-    rel_mcjob:list# McJob workers that does {self.access} to {self.coping}
+    rel_mcjob:list
     confirm:list
     def __post_init__(self):
         Coping.ALL_COPING.append(self)
@@ -40,8 +42,7 @@ motivational_seminar = Coping("motivational_seminar"
                         , ["a venue staff who sets up for that", "a sound technician who manages audio for that"]
                         , ["Does it works?"])
 
-
-
+# Stateに.i_canを増設?
 
 def coping_table():
   base=[
@@ -53,7 +54,6 @@ def coping_table():
   """      
   ]
   for i in Coping.ALL_COPING:
-
     if i.coping_adj:
       for j in i.coping_adj:
         col_coping_adj=[]
