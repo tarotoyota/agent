@@ -20,29 +20,36 @@ spiritual_spot = Coping("spiritual_spot"
                         , ["unhappy", "poverty"]
                         , ["Near", "Touch"]
                         , ["a guard who guards that", "a cleaner who cleans that"] # guards and cleaners of a spiritual spot often near or touch the spritual spot.
-                        , ["Is this the right place?", "Does it works?"])
+                        , ["Is this the right place?", "Does it work?"])
 spiritual_goods= Coping("spiritual_goods"
                         , ["unhappy", "poverty"]
                         , ["Near", "Touch"]
                         , ["a line worker who products that", "a carrier who carries that", "a clerk who sells that", "a warehouse worker who packs and ships that"]
-                        , ["Does it works?"])
+                        , ["Does it work?"])
 nootropics     = Coping("nootropics"
                         , ["illiteracy"]
                         , ["Drink"]
                         , []
-                        , ["Does it works?"])
+                        , ["Does it work?"])
 self_help_book = Coping("self_help_book"
                         , ["illiteracy", "unhappy", "poverty"]
                         , ["Read"]
                         , ["a editor who edits that", "a printer who prints that", "an audiobook narrator who related to that"]
-                        , ["Does it works?"])
+                        , ["Does it work?"])
 motivational_seminar = Coping("motivational_seminar"
                         , ["unhappy", "poverty", "illiteracy"]
                         , ["Attend", "Listen to"]
                         , ["a venue staff who sets up for that", "a sound technician who manages audio for that"]
-                        , ["Does it works?"])
+                        , ["Is this the right place?", "Does it work?"])
 
 # Stateに.i_canを増設?
+
+# state action a -> after coping -> the damage amount from state action a was reduced
+# illiteracy.i_can : I can now understand X. -> If you can understand X, it doesn't work.
+
+# the simpsons : pain was gone, there is only numbness
+
+
 
 def coping_table():
   base=[
