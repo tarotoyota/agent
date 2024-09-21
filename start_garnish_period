@@ -2,8 +2,7 @@
 import agent_output
 from agent_output import coloring
 from dataclasses import dataclass, field
-from typing import List, ClassVar
-
+from typing import List, ClassVar, Dict, Union
 tables=[] # all tables will be appended here.
 
 def tablize(name, tag, usage_ex, item):
@@ -19,21 +18,115 @@ def tablize(name, tag, usage_ex, item):
 
 ######################################################################################
 
+@dataclass
+class Garnish:
+    ALL_GARNISH: ClassVar[List['Garnish']] = []
+
+    name:str
+    tag:str
+    template:list
+    exam: List[List[str]] = field(default_factory=list)# デフォルト値を取るattrが取らないそれより先にあってはならない
+    trigger:str = ""
+    special: Dict[str, List[str]] = field(default_factory=dict)
+    def __post_init__(self):
+        Garnish.ALL_GARNISH.append(self)
+    @staticmethod
+    def garnish_table():
+        garnish_table_result = ""
+
+        for i in Garnish.ALL_GARNISH:
+            exam_rows = ""
+            exam_col = ""
+            special_rows = ""
+            trigger_col = ""
+
+            if i.exam:
+                exam_col = "<tr><th>USER</th><th>SKETCH NAME</th><th>EXPRESSION</th></tr>"
+                for j in i.exam:
+                    exam_rows += f"<tr><td>{j[0]}</td><td>{j[1]}</td><td>{j[2]}</td></tr>"
+            if i.special:
+                for key, value in i.special.items():
+                    special_rows += f"<tr><th>{key}</th><td colspan='2'>{', '.join(value)}</td></tr>"
+            if i.trigger:
+                trigger_col = f"<tr><th>TRIGGER</th><td>{i.trigger}</td></tr>"
+
+
+            garnish_table_result+=f"""
+            <table id="{i.name}">
+            <tr><th id="th_lime" colspan="3">{i.name}</th></tr>
+            <tr><th>TAG</th><td colspan="2">{i.tag}</td></tr>
+            <tr><th>TEMPLATE</th><td colspan="2">{i.template}</td></tr>
+            {trigger_col}
+            {exam_col}
+            {exam_rows}
+            {special_rows}
+            </table>
+            """
+
+        return garnish_table_result
+
+remembered = Garnish(
+    name="remembered"
+    ,tag="JOKE_TLM"
+    ,exam=[["セルライトスパ", "報道インタビュー", "神隠しだ"], ["キングオブコメディ", "自動車教習所", "思い出した　井ノ原快彦だ"], ["シソンヌ", "職員室", "清水の両親シンセ奏者"]]
+    ,template=["Ali can't remember {x} -(lag)-> Ali: Remembered, it's {x}."]
+    )
+zona=Garnish(
+    name="zona"
+    ,tag="JOKE_TLM"
+    ,exam=[["セルライトスパ", "報道インタビュー", "ぞな？"], ["フランスピアノ", "クレーマー", "お馴染みじゃないの？"]]
+    ,template=["Ali says {strange_expression} -> Ali's closed persons don't know the {strange_expression}."]
+    )
+one_sided=Garnish(
+    name="one_sided"
+    ,tag="AtoB"
+    ,template=["Ali: {{one_sided_0}} - Bob: I agree. Thanks to you.", "Ali: {{one_sided_1}} - Bob: I agree. Thanks to you."]
+    ,trigger="The assigned b3scene must be some kind of competition or battle."
+    ,special = {
+        "one_sided_0" : ["It will be one-sided", "The gap will continue to widen", "The balance of power was upset", "The winner and loser are now decided", "This match is already over", "It's not even going to be close", "It's going to be a landslide win"]# A strong man has joined the team. The strong man says to his teammate:# Extend 5 new lines without any explanations. I'll run your response with eval function so don't include unnecessary characters in your response. Start answer with ```python.
+        ,"one_sided_1" : ["Can we keep this gap?", "Are we safe with this advantage?", "Should we play defensively now?", "How long can we maintain this lead?"]# A strong man has joined the team. The teammate says to the strong man:# Extend 5 new lines without any explanations. I'll run your response with eval function so don't include unnecessary characters in your response. Start answer with ```python.
+        }
+    )
+understand_why=Garnish( # sad_pastと統合？？？？？
+    name="understand_why"
+    ,tag="AtoB, BtoA, JOKELESS_TLM"
+    ,template=["Ali's {{understand_why_0}}. -(lag)-> Bob is annoyed by Ali and says: Now I understand why your {{understand_why_0}}.", "Bob's {{understand_why_0}}. -(lag)-> Ali is annoyed by Bob and says: Now I understand why your {{understand_why_0}}."]
+    ,special = {
+        "understand_why_0(0)" : [ # script = f"If a {x}, then at first glance it may seem harmless or positive, but it may be a sign that the child is under stress." # Append 5 new items in stress_make in English, not Japanese. Respond only the 5 items. I'll run your response through the eval function so please do not include unnecessary characters in your response.
+             "child is trying to become a counselor"
+            ,"child is short"
+            ,"child became independent so early"
+            ,"child often stay at school late"
+            ,"child is interested in politics"
+            ,"child is interested in trains"
+            ,"child likes animals more than people"
+            ,"child loves volunteering"
+            ,"child doesn't cry at all"
+            ,"child is extremely strict about rules"
+            ,"child often plays with younger children"
+            ,"child never had a rebellious phase"
+            ,"child is an avid reader beyond their years"
+            ,"child is obsessed with cleanliness"
+            ,"child is overly mature for their age"
+            ,"child has an unusually strong sense of justice"
+            ,"child is always eager to help others"
+            ,"child is excessively quiet"
+            ,"child is obsessed with cleanliness"
+            ]
+        }
+    )
 
 
 
-# for i in stress_make:
-#  print("Bob says : Now I understand why your {i}.")
-
-# The lines in the stress_make list are uttered by Bob in the sitcom when he meets a crazy person.
-# Each line must be a "condition that appears harmless or beneficial but is actually caused by a psychological problem."
-# Append 5 new lines in stress_make in English.  I will run your response through the eval function so please do not include unnecessary characters in your response.
+tables.append(coloring(Garnish.garnish_table()))
 
 
-stress_make=[
- "child is trying to become a counselor" # Most people who aspire to become psychologists or counselors are people who have problems..
-,"child is short" # Stress makes children short.
-,"child became independent so early" # Stressful home makes children independent early.
+######################################################################################
+
+stress_make=[ # delete later
+ "child is trying to become a counselor"
+,"child is short"
+,"child became independent so early"
 ,"child is interested in politics"
 ,"child is interested in trains"
 ,"child likes animals more than people"
@@ -42,15 +135,11 @@ stress_make=[
 ,"child is extremely strict about rules"
 ,"child often plays with younger children"
 ,"child never had a rebellious phase"
-
 ,"child is an avid reader beyond their years"
 ,"child is obsessed with cleanliness"
 ,"child is overly mature for their age"
 ,"child has an unusually strong sense of justice"
 ,"child is always eager to help others"
-]
-
-stress_make+=[
  "child speaks in third person"
 ,"child insists on wearing a helmet indoors"
 ,"child collects rocks and calls them their 'pets'"
@@ -58,17 +147,7 @@ stress_make+=[
 ,"child only eats foods that start with the letter 'P'"
 ]
 
-table_stress_make=f"""
-    <table id="stress_make">
-    <tr><th colspan="2" id="th_lime">stress_make                                                                                                     </th></tr>
-    <tr><th>Tag         </th><td> AtoB, BtoA, Time Lag Mentionable                                                                      </td></tr>
-    <tr><th rowspan="2">f       </th>  <td>Ali's {{ITEM}}. -(lag)-> Bob is annoyed by Ali and says: Now I understand why your {{ITEM}}. </td></tr>
-                                            <td>Bob's {{ITEM}}. -(lag)-> Ali is annoyed by Bob and says: Now I understand why your {{ITEM}}. </td></tr>
-    <tr><th>ITEM        </th><td> {stress_make}                                                                                         </td></tr>
-    </table>
-"""
 
-tables.append(coloring(table_stress_make))
 
 ###################################################################################################
 # 20240919 10:04
@@ -106,39 +185,11 @@ tables.append(coloring(Reason.reason_table()))
 
 ######################################################################################
 
-# A strong man has joined the team. The strong man says to his teammate:
-one_sided_0 = ["It will be one-sided", "The gap will continue to widen", "The balance of power was upset", "The winner and loser are now decided", "This match is already over", "It's not even going to be close", "It's going to be a landslide win"]
-# Extend 5 new lines without any explanations. I'll run your response with eval function so don't include unnecessary characters in your response. Start answer with ```python.
-
-
-# A strong man has joined the team. The teammate says to the strong man:
-one_sided_1 = ["Can we keep this gap?", "Are we safe with this advantage?", "Should we play defensively now?", "How long can we maintain this lead?"]
-# Extend 5 new lines without any explanations. I'll run your response with eval function so don't include unnecessary characters in your response. Start answer with ```python.
-
-
-one_sided_table =f"""
-<table id="one_sided">
-<tr><th colspan="2" id="th_lime">one_sided                                                               </th></tr>
-<tr><th>Tag                     </th><td>AtoB                                               </td></tr>
-<tr><th>Trriger                 </th><td>The assigned b3scene must be some kind of competition or battle.                </td></tr>
-<tr><th rowspan="2">f           </th><td>Ali: {{one_sided_0}} - Bob: I agree. Thanks to you.</td></tr>
-                                     <td>Ali: {{one_sided_1}} - Bob: I agree. Thanks to you.</td></tr>
-<tr><th>one_sided_0             </th><td>{one_sided_0}                                      </td></tr>
-<tr><th>one_sided_1             </th><td>{one_sided_1}                                      </td></tr>
-</table>
-"""
-
-
-tables.append(coloring(one_sided_table))
-######################################################################################
-
-
-
-
-
-
 
 ######################################################################################
+
+# 元取るために六回焼香した
+
 # ノミにも感情あるんだ
 
 
