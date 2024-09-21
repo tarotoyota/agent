@@ -42,12 +42,21 @@ motivational_seminar = Coping("motivational_seminar"
                         , ["a venue staff who sets up for that", "a sound technician who manages audio for that"]
                         , ["Is this the right place?", "Does it work?"])
 
-# Stateに.i_canを増設?
+# 
 
+# Stateに.i_canを増設?
 # state action a -> after coping -> the damage amount from state action a was reduced
-# illiteracy.i_can : I can now understand X. -> If you can understand X, it doesn't work.
+# illiteracy.i_can :
+#   I can now understand X. -> If you can understand X, it doesn't work.
+#   I've become good at X. -> If you are still doing X, it doesn't work.
+# unhappy.i_can :
+#   My cancer stopped growing.
+#   I was saved from the fire.
+# I ended up having to pay less divorce alimony.
+
 
 # the simpsons : pain was gone, there is only numbness
+
 
 
 
