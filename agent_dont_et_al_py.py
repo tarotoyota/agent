@@ -235,11 +235,13 @@ def sad_past():
 # {{i}} means inferior hyponym of the job. e.g. Dart player, Trianglist
 # Extend 20 lines in fsentence_stereoappear in English, not Japanese. I'll run your response with eval function, so don't include unnecessary characters in your response. Start answer with ```python
 
-fsentence_grade         = [
+
+
+fsentence_hypo         = [
     "{i} is not a {h}.", "How could you be jealous of {s}?", "How could you look down on {i}?"
 ]
 
-fsentence_grade         +=[ # Add 20 new English sentences. hyper stands for hypernym, hypo_s stands for hyponym superior, hypo_i stands for hyponym inferior. I will run your response through the eval function so please do not include unnecessary characters in your response.
+fsentence_hypo         +=[ # Add 20 new English sentences. hyper stands for hypernym, hypo_s stands for hyponym superior, hypo_i stands for hyponym inferior. I will run your response through the eval function so please do not include unnecessary characters in your response.
  "Ali: It's hard to succeed as a {s}, so I became a {i}. - Bob: It's even harder to succeed as a {i}." # si + i
 ,"Ali: I'm a failure as a {h}. - Bob: A {i} is not a {h}." # h + ih
 ,"Ali: I want to quit being a {h}. - Bob: A {i} is not a {h}." # h + ih
@@ -260,9 +262,13 @@ fsentence_grade         +=[ # Add 20 new English sentences. hyper stands for hyp
 ,"Ali: I keep failing as a {i}. - Bob: Every failure is a step towards becoming a {h}."  # i + h
 ]
 
-fsentence_grade         +=[
+fsentence_hypo         +=[
  "Ali: I was told that I was suited to be a {i}. - Bob: Perhaps it is an insult."
 ,"Ali: My parents wanted me to be a {hyper}. Now, I'm a {i}. - Bob: It's not too late to fulfill their wishes."
+    ]
+
+fsentence_modifier      =[
+    "Ali: I'm {x.modifier}. - Bob: That's worse than not being that."
     ]
 
 
@@ -312,8 +318,10 @@ list_desura = ['有名ですらない', '成功してすらない', '社員で�
 agent_dont_table=f"""
 <table>
 <tr><th colspan="2">table_agent_dont</th></tr>
-<tr><th colspan="2">{{h}}, {{s}}, {{i}} = grade_name, hypo_s, (hypo_i + {{bottom}})</th></tr>
-<tr><th id="th_cyan">fline_grade             <br><small># Bob mentions that Ali did {{MISLEAD}}:                       </small></th><td>{fsentence_grade}        </td></tr>
+<tr><th colspan="2">{{h}}, {{s}}, {{i}} = grade_name, hypo_s, hypo_i</th></tr>
+<tr><th id="th_cyan">fline_grade             <br><small># Bob mentions that Ali did {{MISLEAD}}:                       </small></th><td>{fsentence_hypo}        </td></tr>
+<tr><th id="th_cyan">fline_modifier          <br><small># Bob mentions that Ali is a {{modifier}}:                       </small></th><td>{fsentence_modifier}  </td></tr>
+<tr><th colspan="2">{{i}} += {{bottom}} </th></tr>
 <tr><th id="th_cyan">fline_Appear            <br><small># Bob mentions that Ali did {{s_StereoAppear}}:                </small></th><td>{fsentence_stereoappear} </td></tr>
 <tr><th id="th_cyan">fline_Action            <br><small># Bob mentions that Ali did {{s_StereoAction}}:                </small></th><td>{fsentence_stereoaction} </td></tr>
 <tr><th id="th_cyan">fline_Suffer            <br><small># Bob mentions that Ali did {{s_Suffer}}:                      </small></th><td>{fsentence_suffer}       </td></tr>
@@ -332,6 +340,23 @@ agent_dont_table=f"""
 
 </table>
 """
+
+def seer_dont():
+    seer_dont=f"""
+    <table id="seer_dont">
+    <tr><th></th></tr>
+
+
+    </table>
+
+
+    """
+
+
+
+
+
+
 
 tables_agent_dont_et_al_py.append(coloring(agent_dont_table))
 
