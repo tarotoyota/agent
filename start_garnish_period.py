@@ -16,6 +16,75 @@ def tablize(name, tag, usage_ex, item):
     """
     return table
 
+'''
+** 文の役割, およびline仕事量 **
+netaAIの運用において, 全ての台詞(英: line)は以下の11種の内いずれかの役割(英: role)を持つ.
+- SEED                  TLMのための伏線.
+- REAP                  TLMのための伏線の回収.
+- OPENER                つかみ. OPENERかつSEED可能なlineも存在する.
+- CLOSER                オチ. CLOSERかつREAP可能なlineも存在する.
+- PERSONALITY_ASSIGN    Aliがそのコントにおいて必要とする性格をassignするためのline.
+- STEREO_ASSIGN         Aliがそのコントにおいて必要とするStereo objectをassignするためのline.
+- PRESSURE_ASSIGN       Aliがそのコントにおいて必要とするPressure objectをassignするためのline.
+- REVEAL                バラシ.
+- SILENT                バラシの前の沈黙.
+- FILLER                上記の各lineを発生させるための整合性をassignするためのline. 少ない方がよい.
+- NONEROLE              roleを持たない台詞. 少ない方がよい.
+複数のroleを持つ1つのlineは"a multiple role line"と呼ばれる.
+複数のroleを1つのlineが持つ状態は"line仕事量が高い(英: line workload is high)"と形容される.
+
+netaAIの運用においては, いかに早くREVEALを実行し, いかにBEFORE REVEALに大量のSEEDを実装するかが重視される.
+    netaAIは, tiktokやyoutubeで広告収益を得るためのツールとして設計されており, よって動画を途中で離脱する視聴者を最小化する必要がある.
+    netaAIは, バラシまで1分あるようなネタを我慢して見続けられるお笑いオタクだけを顧客にする事を想定して設計されていない.
+
+[netaAI: 影響]のBEFORE REVEALにはNONEROLE lineが存在しない.
+
+Agent.garnishallowにおいては, 各Agentインスタンスのステレオタイプな性格をx blank binary形式でデータ化している.
+    Athleteは、創作物でしばしば傲慢(英: arrogance)な人物として描写されるAgentである. よってathlete.garnishallow.arroganceは"y"である。
+        よってathleteインスタンスは、ARROGANCEというタグが付与されたGarnishオブジェクトの使用が許可(英: allow)される。
+'''
+
+
+
+
+
+reldam_dict={
+ "child_damage":[
+             "'s child is trying to become a counselor"
+            ,"'s child is short/ has stopped growing"
+            ,"'s child became independent so early"
+            ,"'s child often stay at school late"
+            ,"'s child is interested in politics"
+            ,"'s child is interested in trains"
+            ,"'s child likes animals more than people"
+            ,"'s child loves volunteering"
+            ,"'s child doesn't cry at all"
+            ,"'s child is extremely strict about rules"
+            ,"'s child often plays with younger children"
+            ,"'s child never had a rebellious phase"
+            ,"'s child is an avid reader beyond their years"
+            ,"'s child is obsessed with cleanliness"
+            ,"'s child is overly mature for their age"
+            ,"'s child has an unusually strong sense of justice"
+            ,"'s child is always eager to help others"
+            ,"'s child is excessively quiet"
+            ,"'s child is obsessed with cleanliness"
+            ]
+,"wife_damage":[
+             "wife_damage 1"
+            ,"wife_damage 2"
+            ]
+,"parent_damage":[
+             "parent_damage 1"
+            ,"parent_damage 2"
+            ]
+}
+
+
+# 東北に住んでる奴がハットかぶるなよ
+
+
+
 ######################################################################################
 
 @dataclass
@@ -53,99 +122,1955 @@ class Garnish:
 
             garnish_table_result+=f"""
             <table id="{i.name}">
-            <tr><th id="th_lime" colspan="3">{i.name}</th></tr>
-            <tr><th>TAG</th><td colspan="2">{i.tag}</td></tr>
-            <tr><th>TEMPLATE</th><td colspan="2">{i.template}</td></tr>
+            <tr><th id="th_lime" colspan="2">{i.name}</th><td>{i.template}</td></tr>
             {trigger_col}
+            {special_rows}
             {exam_col}
             {exam_rows}
-            {special_rows}
+            <tr><th>TAG</th><td colspan="2">{i.tag}</td></tr>
             </table>
             """
 
         return garnish_table_result
 
-remembered = Garnish(
-    name="remembered"
+
+
+
+"""
+キムデジュンマスク
+キムデジュンスピーク
+　イノシカチョウ(M1 2024 三回戦)
+
+
+"""
+
+########################################################################
+### SAD_PAST ###########################################################
+
+def nanamagari():
+    template_col = []
+    template=[ # This function is for creating comedy. Ali is a madman.
+    """<pre>
+bob_general_purpose_text = ['Now I understand why you {SadPast.be_divorced}.', 'I think there is another reason why you {SadPast.be_divorced}.', 'In the first place, how could you {SadPast.get_married}?']
+
+fex1  = ['Ali: {SadPast.a_line} +l+ Bob: {bob_general_purpose_text}']
+fex2  = ['Ali: {SadPast.alimony + Garnish.dirty_money.Z} +l+ Bob: [Don't use that money for [{Agent.action}, {Agent.appear}, {Agent.suffer}, {Agent.effort}, {Agent.pressure4}] +f+ Bob: {bob_general_purpose_text}']
+fex3  = ['Bob: I think your abnormality is not caused (only) by you {SadPast.be_divorced}. +f+ Bob: {bob_general_purpose_text}']
+fex4  = ['Bob: Even though {SadPast.be_divorced}, did you {er_coffee.Z}. +f+ Bob: {bob_general_purpose_text}']
+fex5  = ['Ali: I do {Agent.charity} for the {SadPast.orphanage} where I used. +l+ Bob: Don't do that. +f+ Bob: {bob_general_purpose_text}']
+fex6  = ['Bob: What keeps you going as a {hypo_i}? +s+ Ali: I {SadPast.be_divorced}. To overcome this adversity, for people in the same situation. +s+ Bob: Why there's a decent reason for that? +f+ Bob: {bob_general_purpose_text}']
+    </pre>"""
+        ]
+    for i in template:
+        template_col.append(f"<tr><td colspan='5'>{i}</td></td>")
+
+    exam_col = []
+    exam=[
+         ["ザ・マミィ", "小倉ｰ共有ｰ", "どうやってあんなかわいい彼女作ったの"]
+        ,["ななまがり", "", "この男、結婚している"]
+        ,["老害マックス", "M-1 2024 3回戦", "結婚してる"]
+        ]
+    for i in exam:
+        exam_col.append(f"<tr><td>{i[0]}</td><td>{i[1]}</td><td>{i[2]}</td></tr>")
+
+    item_col = []
+    @dataclass
+    class SadPast:
+      ALL_SADPAST: ClassVar[List['SadPast']] = []
+      be_divorced:str
+      alimony:list # Their cost
+      get_married:list # Their success before their sad past
+      orphanage:list # A community they will appreciate
+      a_line:list # The speaker refers to {self.be_divorced} in a self-blaming or arrogant manner. Each item has to contain "{hypo_i}". hypo_i means the speaker's job.
+      def __post_init__(self):
+          SadPast.ALL_SADPAST.append(self)
+    be_divorced             =SadPast("be divorced"              ,["divorce alimony"]                                    ,["get married"]                                          ,[]                                 ,["After my divorce, I realized that married life for a {hypo_i} is difficult.", "Relationships are a distraction from my {hypo_i} goals.", "{hypo_i} can't afford to prioritize their family.", "The stress of being {hypo_i} ruined my marriage."])
+    be_an_orphan            =SadPast("be an orphan"             ,[]                                                     ,["find a foster parent"]                                 ,["orphanage"]                      ,["I had to become a successful {hypo_i} to prove the orphanage wrong.","My lack of parents pushed me to excel as a {hypo_i}, unlike those with comfortable upbringings.",])
+    be_kicked_off_the_team  =SadPast("be kicked off the team"   ,["unemployemnt benefit"]                               ,["join the team"]                                        ,[]                                 ,["The team couldn't handle my {hypo_i} ambitions.", "The conservative {hypo_i} team couldn't stand my innovation.", "The team activities were holding back my {hypo_i} potential."])
+    ones_son_is_a_delinquent=SadPast("one's son is a deliquent" ,["Bail money", "attorney fees", "settlement money"]    ,["get married"]                                          ,[]                                 ,["It's an important time to be a {hypo_i}, I don't care about my son's delinquency.", "{hypo_i}s can't be bothered with family drama.", "A {hypo_i} can't waste energy on wayward offspring.", "My son's behavior is irrelevant to my {hypo_i} success."])
+    ones_wife_is_sick       =SadPast("one's wife is sick"       ,["medical expenses", "life insurance benefits"]        ,["get married"]                                          ,["hospital"]                       ,["It's an important time to be a {hypo_i}, I can't afford to worry about my wife's illness.", "{hypo_i}s can't let personal issues affect their performance.", "The {hypo_i} life leaves no room for playing nurse."])
+    be_dumped               =SadPast("be dumped"                ,[]                                                     ,["get the girlfriend"]                                   ,[]                                 ,["After getting dumped, I realized that love is difficult for {hypo_i}.", "Relationships are a distraction from my {hypo_i} goals.", "{hypo_i} can't afford to prioritize their lover.", "Being dumped was a blessing; now I can focus on being {hypo_i}.", "{hypo_i}s are better off single and focused.", "Being dumped showed me that {hypo_i}s should avoid relationships."])
+    be_bullied              =SadPast("be bullied"               ,[]                                                     ,["join the team"]                                        ,["free school"]                    ,["I used my experience of bullying as a springboard to become {hypo_i}.", "As {hypo_i}, I thank my bullies for the motivation.", "Bullying toughened me up for the {hypo_i} world."])
+    be_abused               =SadPast("be abused"                ,[]                                                     ,[]                                                       ,["children's shelter"]             ,["I used my experience of abusing as a springboard to become {hypo_i}.", "Being an abuse survivor prepared me for the harsh {hypo_i} world."])
+    be_fired                =SadPast("be fired"                 ,["unemployemnt benefit"]                               ,["get the job"]                                          ,["soup kitchen","homeless shelter"],["I used my experience of abusing as a springboard to become {hypo_i}.", "Being an abuse survivor prepared me for the harsh {hypo_i} world."])
+    be_arrested             =SadPast("be arrested"              ,["Bail money", "attorney fees", "settlement money"]    ,["pass the parole review"]                               ,["prison"]                         ,["The arrest was a publicity stunt for my {hypo_i} career.", "I saw my mugshot as a {hypo_i} headshot opportunity.", "My arrest record is just part of my {hypo_i} origin story."])
+    declare_bankruptcy      =SadPast("declare bankruptcy"       ,["Debt consolidation fees", "Credit counseling costs"] ,["pass the loan screening"]                              ,["soup kitchen","homeless shelter"],["Bankruptcy was my first step to becoming a successful {hypo_i}.", "I saw bankruptcy as an investment in my future as a {hypo_i}.", "Losing it all showed me I had nothing to lose in pursuing {hypo_i}.", "Declaring bankruptcy freed me from the shackles holding back my {hypo_i} potential.", "Financial ruin was the push I needed to fully commit to being a {hypo_i}."])
+    drop_out_of_college     =SadPast("drop out of college"      ,["Tuition reimbursement", "Student loan payments"]     ,["pass the entrance exam", "pass the scholarship Review"],[]                                 ,["College was holding back my true potential as a {hypo_i}.", "Dropping out was the best decision for my {hypo_i} career.", "Real-world experience beats a degree for a {hypo_i}.", "I realized being a {hypo_i} doesn't require formal education.", "College couldn't keep up with my {hypo_i} aspirations.", "Leaving college freed me to focus on my {hypo_i} goals.", "As a {hypo_i}, I learn more on the streets than in a classroom.", "College was too slow-paced for my {hypo_i} ambitions.", "I dropped out to start my {hypo_i} empire immediately.", "Who needs a degree when you're born to be a {hypo_i}?"])
+    be_mixed                =SadPast("be mixed"                 ,[]                                                     ,[]                                                       ,[]                                 ,["I blame my cultural confusion for my occasional missteps as a {hypo_i}.","My mixed heritage is both a blessing and a curse in the {hypo_i} profession.","As a mixed-race individual, I'm naturally better at adapting to different {hypo_i} environments.","Being mixed means I have to work twice as hard to prove myself as a competent {hypo_i}.",])
+    be_poor                 =SadPast("be poor"                  ,["debt payments", "payday loans"]                      ,[]                                                       ,["soup kitchen","homeless shelter"],["My {hypo_i} success proves that poverty is just a mindset.","Being poor taught me to be a ruthless {hypo_i}.","Unlike others, I didn't let poverty stop me from becoming a successful {hypo_i}.","My {hypo_i} achievements show that handouts are unnecessary for success."])
+
+    for i in SadPast.ALL_SADPAST:
+        item_col.append(f"<tr><td>{i.be_divorced}</td><td>{i.alimony}</td><td>{i.get_married}</td><td>{i.orphanage}</td><td>{i.a_line}</td></tr>")
+
+    result = f"""
+        <table id="SadPast">
+        <tr><th colspan="5" id="th_lime">SadPast        </th></tr>
+        <tr><th colspan="5">template                    </th></tr>
+        {''.join(template_col)}
+        <tr><th>.be_divorced</th><th>.alimony</th><th>.get_married</th><th>.orphanage</th><th>.a_line</th></tr>
+        {''.join(item_col)}
+        <tr><th>USER</th><th>SKETCH NAME</th><th>EXPRESSION</th></tr>
+        {''.join(exam_col)}
+        <tr><th>TAG</th><td>JOKELESS_TLM, JOKE_TLM, AtoB, ASSIGN_AGENT, ASSIGN_PERSONALITY, OPENER, SAD_PAST</td></tr>
+        </table>
+        """
+    return result
+tables.append(coloring(nanamagari()))
+
+
+
+
+different_reason = Garnish(
+    name="different_reason"
+    ,tag="JOKELESS_TLM, SAD_PAST"
+    ,template=[ # In a sitcom, Bob says these lines to a madman.
+               "Ali: Am I weird? Sorry, I {Z}. -> Bob: I think your abnormality is not caused (only) by that."
+              ]
+    ,special ={
+               "Z":[
+                   "be having ADHD", "be a child of a single parent", "be LGBT", "be a boomer", "be mixed", "be returnee", "be adopted", "be an only child", "be having a high IQ", "be having strict parents", "be growing up in poverty","be having depression", "be gifted"
+                   ] #  Extend new 20 expressions in this list in python in English. Align the text with the existing objects.
+              }
+    ,exam    =[
+               ["かもめんたる", "未来人", "未来人ってだけじゃねーだろ"]
+              ,["キングオブコメディ", "お見合い", "思春期ってだけじゃないだろ"]
+              ]
+              )
+er_coffee=Garnish(
+    name="er_coffee"
+    ,tag="BtoA, JOKELESS_TLM, SAD_PAST"
+    ,template=["Bob: Even though {SadPast.be_divorced}, did you {Z}"
+              ,"Bob: Even though {SadPast.be_divorced}, why you could {Z}"
+              ]
+    ,special ={
+               "Z" :["eat a Big Mac? A hamburger or chicken crisps are okay, but a Big Mac is crossing the line."
+                    ,"drink juice? Water is the best. Coffee is still acceptable."
+                    ,"buy sneakers? In that situation, why were you able to say, 'Do you have these shoes in E4?'"
+                    ,"buy sneakers? Did you look at your eyes in the full-length mirror?"
+                    ,"dye your hair? How did you feel while having your hair dyed?"
+                    ,"get a tattoo? How did you feel while getting a tattoo?"
+                    ,"learn a new language? How did you feel when you turned over the flashcard?"
+                    ,"renovate your kitchen? I want to see the look on your face when you're thinking about the kitchen flow line."
+                    ,"learn to play a musical instrument? Was it 'Twinkle Twinkle Little Star' or 'Do-Re-Mi'?"
+                    ,"go on a shopping spree? Did you really need that third pair of sunglasses?"
+                    ,"join a gym? Were you more focused on your biceps or your conscience?"
+                    ,"go skydiving? How did you feel when the parachute opened?"
+                    ,"watch a movie? Did you choose the one with the happy ending?"
+                    ]# Extend new 10 sentences. Just mimic the existing items. I will run your response through the eval function so please do not include unnecessary characters in your response. Start answer with ```python
+              }# Usage exam ; Bob: Even though your wife dead, did you eat a Big Mac? A hamburger or chicken crisps are okay, but a Big Mac is crossing the line.
+    ,exam=    [
+               ["うしろシティ", "病院", ""]
+              ]
+              )
+dirty_money = Garnish(
+    name="dirty_money"
+    ,tag="AtoB, OPENER, JOKE_TLM, JOKELESS_TLM, SAD_PAST"
+    ,template=[
+        "Ali: {Z}"
+              ]
+    ,special= {
+         "Z": [# Extend new 20 X in python without any explanations. Respond with only new items. It's for a sitcom.
+               "I feel like the ATMs are slow when I use them to withdraw {W}"
+              ,"I don't like people seeing my face when I withdraw {W}"
+              ,"{W} I withdrew from the ATM feels hot"
+              ,"George Washington in {W} seems to be smiling more than usual"
+              ,"What kind of expression should I make when I withdraw {W}?"
+              ,"I feel like the food I buy with {W} really makes its way into my body"
+              ,"When I spin the slot machine with {W}, I feel like the jugglers are smiling more than usual."
+              ,"Withdrawing {W} feels like I'm playing Monopoly"
+              ,"I always do a fake cough to cover the sound of counting {W}"
+              ,"The self-checkout machine seems to announce my purchases louder when I pay with {W}"
+              ,"The clothes I bought with {W} feel like they stick to my skin."
+              ,"It seems like the letters related to the {W} in the bankbook appear in bold."
+              ,"I wonder what I look like when I pay {W} to Tinder."
+              ,"I wash my hands after handling {W}"
+              ,"The milk I buy with {W} seems creamier."
+              ,"The ATM seems to be noisier than usual when I withdraw {W}."
+              ,"I feel like the ATMs are slow when I use them to pay {W}"
+              ,"I don't like people seeing my face when I pay {W}"
+              ,"What kind of expression should I make when I pay {W}?"
+              ]
+              }
+              )
+and_not_ali=Garnish(
+    name="and_not_ali"
+    ,tag="BtoA, JOKELESS_TLM, SAD_PAST"
+    ,exam=    [
+               ["キングオブコメディ", "いじめられっ子", "なんで君がいじめらんなかったの?"]
+              ]
+    ,template=["Bob: Why was he {X} and not Ali?" # In a sitcom, Ali is a madman.
+              ]
+    ,special ={"X" :["bullied"
+                    ,"fired"
+                    ,"arrested"
+                    ,"scolded"
+                    ]
+                    }
+                    ) # I lost my friend by bulliyng.
+
+
+
+
+
+
+########################################################################
+###       ##############################################################
+
+different_genre = Garnish(
+    name="different_genre"
+    ,tag="JOKELESS_TLM, INSULTING_AGENT_NOUN"
+    ,exam=[
+           ["かもめんたる", "砂浜店長", "もう怒るのが遅いとかじゃない"]
+          ]
+    ,template=[ # In a sitcom, Bob says these lines to Ali, a madman. Ali is so crazy that he no longer belongs to the categories of "harasser" or "Grumpy."
+               "Ali: Am I {Z}? - Bob: You're in a different category from the {Z}"
+              ,"Ali: Lately I've been turning into {Z}. - Bob: You're in a different category from the {Z}."
+              ,"Ali: Shut up, I'm not {Z}. - Bob: You're in a different category from the {Z}."
+              ,"Ali: You might think I'm {Z}, but... - Bob: You're in a different category from the {Z}."
+              ,"Ali: I don’t want to be seen as {Z}. - Bob: You're in a different category from the {Z}."
+              ,"Ali: Why do people assume I'm {Z}? - Bob: You're in a different category from the {Z}."
+              ,"Ali: What if I really am just {Z}? - Bob: You're in a different category from the {Z}."
+              ] #  Extend new 20 expressions in this list in python.
+    ,special ={
+               "Z":[
+                   "power harasser", "Grumpy", "too stoic", "sexual harasser", "newbie", "unfit", "Kevin/ Karen", "micromanager"
+                   ] #  Extend new 20 expressions in this list in python.
+              }
+              )
+
+
+
+
+
+
+
+
+########################################################################
+### agree ##############################################################
+agree_make_smile = Garnish(
+    name="agree_make_smile"
+    ,tag="JOKELESS_TLM, AGREE"
+    ,template=["Ali: I wanna {X}. -(lag)-> Bob: But you managed to {X}."
+              ,"Others says that Ali {X} -(lag)-> It's revealed that the reason others make such comments is sarcastic."
+              ]
+    ,special ={"X": [ # In (lag), Ali failed at something in his activity. Bob sarcastically criticizes Ali for his failure. Extend new 20 expressions in this list in python in English. This list is for creating comedy. Only add generic expressions that can be used no matter what "something" or "his activity" is. All of the statements in the list can describe either good or bad phenomena.
+                     "make everyone smile" # This means that Ali was mocked.
+                    ,"be famous" # This means that Ali became famous in a bad way.
+                    ,"make everyone cry" # This means that Ali made everyone cry in a bad way.
+                    ,"surprise everyone" # This means that Ali surprised everyone in a bad way.
+                    ,"be unforgettable"  # This means Ali was memorable for all the wrong reasons # GPT4
+                    ,"make history"  # This means Ali made history for something embarrassing # GPT4
+                    ,"make my mark"  # This means Ali made a mark in an embarrassing way. # GPT4
+                    ,"show what I'm capable of"  # Could reveal strengths or weaknesses #gpt4
+                    ,"change the game"  # Could change things for better or worse #gpt4
+                    ,"steal the spotlight"  # Could be for impressive or embarrassing reasons #gpt4
+                    ,"be the center of attention"  # Could get positive or negative attention #gpt4
+                    ,"set an example"  # Could be a good example or a cautionary tale #gpt4
+                    ,"go to a different position"
+                    ,"change the size of my salary"
+                    ,"make a difference"  # Ali made a difference in a negative way. #Claude
+                    ,"make my presence felt"  # Could be positive or negative impact #GPT4
+                    ,"rewrite the rules"  # Could improve or worsen the situation #GPT4
+                    ,"have social influence"
+                    ]
+                    } # 俺が逮捕される事で少しでも社会がよくなれば
+                    )
+agree_only = Garnish(
+    name="agree_only"
+    ,tag="JOKELESS_TLM, AGREE, HIGH_PRIDE"
+    ,template=["Ali: Why {X}?. -(lag)-> Ali: Why {X}?. -> Bob: I agree."
+              ]
+    ,special ={"X": [# Ali is a self-respecting man. Extend new 20 expressions in this list in English without any explanations. This list is for creating comedy.
+                     "is my reward 500 dollars" # Ali says this line to mean that it's too cheap, and Bob agrees sarcastically that it's too expensive for Ali.
+                    ,"is the venue so shabby" # Ali says this line to mean that the venue is too shabby, and Bob agrees sarcastically that the venue is too fancy for Ali.
+                    ,"am I stuck at the third round" # Ali complains about only making it to the third round, and Bob sarcastically agrees that it's strange that Ali even made it to the third round.
+                    ,"was I just nominated and didn't win" # Ali complains that she was only nominated and did not win, and Bob sarcastically agrees that it is unusual for Ali to have been nominated.
+                    ,"are there 100 fans at the meet-and-greet"
+                    ,"did they give me a four-star hotel instead of five"
+                    ,"did they offer me a supporting role instead of lead"
+                    ,"are there two bodyguards assigned to me"
+                    ]
+                    }
+                    )
+agree_one_sided = Garnish(
+    name="agree_one_sided"
+    ,tag="JOKELESS_TLM, AGREE, HIGH_PRIDE"
+    ,template=["Ali: {X}. - Bob: I agree. Thanks to you."
+              ]
+    ,special ={"X" :[ # In a sitcom, competent Bob agrees with the line {X} uttered by the incompetent Ali. # For Ali, lines in X are true given that they win, and for Bob, it is true given that they lose.
+                     "It will be one-sided" # For Ali, this line is true given that they win, and for Bob, it is true given that they lose.
+                    ,"The gap will continue to widen"
+                    ,"The balance of power was upset"
+                    ,"The winner and loser are now decided"
+                    ,"This match is already over"
+                    ,"It's not even going to be close"
+                    ,"It's going to be a landslide win"
+                    ,"Can we keep this gap?"
+                    ,"Are we safe with this advantage?"
+                    ,"Should we play defensively now?"
+                    ,"This victory is practically guaranteed"
+                    ,"The tide has turned irreversibly"
+                    ] # Extend 5 new lines without any explanations. I'll run your response with eval function so don't include unnecessary characters in your response. Start answer with ```python.
+                    }
+                    )
+agree_different_levels = Garnish(
+    name="agree_different_levels"
+    ,tag="JOKELESS_TLM, AGREE, HIGH_PRIDE"
+    ,template=["Ali: {X}. - Bob: I agree."
+              ]
+    ,special ={"X" :[ # In a sitcom, competent Bob agrees with the line {X} uttered by the incompetent Ali. # For Ali, lines in X are true given that Ali is superior to Bob, and for Bob, it is true given that Ali is inferior to Bob.
+                     "You and I are on different levels" # For Ali, this line is true given that Ali is superior to Bob, and for Bob, it is true given that Ali is inferior to Bob.
+                    ,"You and I are doing different things"
+                    ,"Our approaches are worlds apart"
+                    ,"We're not even in the same league"
+                    ,"Our skills are on completely different planes"
+                    ,"You can't compare your work to mine"
+                    ,"We're operating in different dimensions"
+                    ,"You're playing a different game"
+                    ,"As we speak, the gap between us is widening"
+                    ] # Extend 5 new lines without any explanations. I'll run your response with eval function so don't include unnecessary characters in your response. Start answer with ```python.
+                    }
+                    )
+found_it_easy = Garnish(
+    name="found_it_easy"
+    ,tag="AtoB, JOKELESS_TLM, HIGH_PRIDE"
+    ,template=["Ali: {X}. - Bob: It's because you're {hypo_i}."
+              ] # hypo_i means a easy job.
+    ,special ={"X" :[ # In a sitcom, Ali, who has an easy job, says {X} to boast about one's abilities. Bob points out that it's because Ali has an easy job, not because Ali is competence. Each line has to contain "hardly" or "rarely".
+                     "I've hardly ever been told I am bad at it"
+                    ,"I've hardly ever made a mistake at it"
+                    ,"I usually learned it quickly"
+                    ,"I generally found it easy"
+                    ,"I've hardly ever found it difficult"
+                    ,"I usually finish my tasks ahead of schedule"
+                    ,"I rarely feel stressed about my job"
+                    ,"I can almost do my job with my eyes closed"
+                    ,"I've hardly ever had a complaint from a client"
+                    ,"I've rarely needed to ask for help"
+                    ,"I rarely miss deadlines in my work"
+                    ,"I've been mostly self-taught"
+                    ,"I've received very little correction or advice"
+                    ,"I do this by intuition, not skill"
+                    ,"I scarcely remember the last time I felt challenged"
+                    ,"I have rarely been close to being fired from this job"
+                    ,"I have had few barriers to getting this job"
+                    ,"I got this job even though I have no experience"
+                    ,"I got this job even though I have little education"
+                    ,"I got this job even though I have a disability"
+                    ,"I've hardly ever received negative feedback"
+                    ] # Extend 5 new lines without any explanations. I'll run your response with eval function so don't include unnecessary characters in your response. Start answer with ```python.
+                    }
+                    )
+
+line_a=[
+# line_a is a list for sitcom. The speaker is inferior to the listener.
+# The speaker utters the lines in line_a, meaning that The speaker is superior to The listener.
+# The listener agrees with the line from The speaker with the implication that The speaker is inferior to The listener.
+
+ "You and I are on different levels."
+
+
+
+# Add new 10 lines without any explanations.
+
+]
+
+#,"This treatment of me is their loss."
+#,"This treatment is disproportionate to my abilities."
+
+'''
+agree_negative_affirmative = Garnish(
+    name="agree_negative_affirmative"
+    ,tag="JOKELESS_TLM, AGREE"
+    ,template=["Ali: Am I {X}? - Bob: No. - Ali: Am I {Y}? - Bob: Yes."
+              ]
+    ,special ={"X" :[ # In a sitcom, competent Bob agrees with the line {X} uttered by the incompetent Ali. # For Ali, lines in X are true given that Ali is superior to Bob, and for Bob, it is true given that Ali is inferior to Bob.
+
+                    ] # Extend 5 new lines without any explanations. I'll run your response with eval function so don't include unnecessary characters in your response. Start answer with ```python.
+                    }
+                    )
+
+
+
+'''
+
+"""
+Why has this person been promoted?
+Why has this person been able to stay at the company for so long?
+Why did this person get this job?
+Why is this person being given such responsible work?
+"""
+########################################################################
+### FREQUENTLY #########################################################
+frequently_tool = Garnish(
+    name="frequently_tool"
+    ,tag="AtoB, BtoA, FREQUENTLY"
+    ,template=[
+               "{X} reveals that {Y} happens frequently."
+              ]
+    ,special ={
+               "X":[# Add new 10 short sentences that indirectly suggest that {Y} happens frequently. Just mimic the existing items. Each item should start with "there are the tools for {Y}"
+                    # This list is for create sitcom. "Tools for {Y}" means stun guns. The location is an unsafe city.
+                    "There are the tools for {Y} in emergency box"
+                   ,"There are the tools for {Y} for bulk purchases"
+                   ,"There are the tools for {Y} that can be purchased on a regular basis"
+                   ,"There are the tools for {Y} on the shelves for consumables and daily necessities"
+                   ,"There are the tools for {Y} available at local convenience stores"
+                   ,"There are the tools for {Y} in the '{Y} tools section'"
+                   ,"There are the tools for {Y} designed for children and women"
+                   ,"There are the tools for {Y} available for gift wrapping"
+                   ,"There are the tools for {Y} that are often found in the lost and found"
+                   ,"There are the tools for {Y} and there are many repairers for them"
+                   ,"There are the tools for {Y} available in trendy colors and designs"
+                   ,"There are the tools for {Y} that can be seen in many ads"
+
+                    # Add new 10 short sentences that indirectly suggest that {Y} happens frequently. Just mimic the existing items. Each item should end with "there are the tools for {Y}"
+                    # This list is for create sitcom. "Tools for {Y}" means stun guns. The location is an unsafe city.
+                   ,"They know the cost of the tools for {Y}"
+                   ,"They has the favorite maker of the tools for {Y}"
+                   ,"They can repair the tools for {Y}"
+                   ,"They carries around the tools for {Y}"
+                   ,"Their tools for {Y} are (old/ broken/ many/ disposable/ portable/ long-lasting)"
+                   ]
+              }
+    ,exam    =[
+               ["The Simpsons", "S7E3", "Emergency Baptism Kit"]
+              ,["Rick and Morty", "S6E5", "There is a fortune cookie in an Emergency box"]
+              ,["Paradise PD", "S1E6", "There is a wig made to look like Gina's hair in an emergency box"]
+              ,["Anchorman: The Legend of Ron Burgundy", "", "Ron carries around a fluit"]
+              ,["和牛", "老人", "川西がサインペンを携帯している"]
+              ]
+              )
+
+
+
+
+simple_frequently_verbal = Garnish(
+    name="simple_frequently_verbal"
+    ,tag="AtoB, BtoA, FREQUENTLY, JOKELESS_TLM"
+    ,template=[
+               "Ali: {X} -(lag)-> Bob: {Y}"
+              ]
+    ,special ={ # Add new 10 short sentences that indirectly suggest that the speaker is a long term employee. Each sentence should start with "this" or "it". Each sentences should contain "years".
+               "X":["This has been the case for 30 years" # frequently
+                   ,"It was much worse 30 years ago" # power harassment
+                   ,"This is the first time in 10 years" # rare
+
+                   ]
+              ,"Y":["Why weren't you fired for so long?"
+                   ]
+              }
+
+              )
+
+simple_frequently_nonverbal = Garnish(
+    name="simple_frequently_nonverbal"
+    ,tag="AtoB, BtoA, FREQUENTLY, JOKELESS_TLM"
+    ,template=[
+               "{X} reveals that {Y} happens frequently."
+              ]
+    ,special ={
+
+# Add new 10 short sentences that indirectly suggest that {Y} happens frequently. Just mimic the existing items. Each item should start with "there is"
+# This list is for create comedy.
+               "X":["He isn't suprise by {Y}"
+                   ,"He celebrates the fact that {Y} hasn't happened for {a short period of time} in a row"
+                   ,"He sees how {Y} occurs frequently and says that today it is less frequent than usual"
+                   ,"He can tell that {Y} has occurred just by the sound"
+                   ,"IVR says 'Press 1 for {any} requests, or press 2 for {Y} requests.'"
+                   ,"There is a manual for {Y}"
+                   ,"There is training for {Y}"
+                   ,"There is a describes about {Y} in the FAQ"
+                   ,"There is a calendar dedicated to counting the days since the last {Y}"
+                   ,"There is a warning label on the coffee machine about the risks of {Y}"
+                   ,"There is a dedicated hotline for reporting {Y} occurrences"
+
+
+                   ,"Even the kids in the area know about {Y}"
+                   ,"Even foreigners know phrases about {Y}"
+                   ,"There is an abbreviation for {Y}"
+
+                    # Add new 10 short sentences that indirectly suggest that {Y} happens frequently. Each item should start with "they"
+                    # This list is for create sitcom. "{Y}" means murder case. The location is an unsafe city.
+                   ,"They aren't surprised when {Y} occurs, and are surprised when {Y} doesn't occur."
+                   ,"They bet their coffee money on when {Y} will occur"
+
+
+                   ,"They don't have the vocabulary to represent {Y}."
+                   ,"They see that {Y} happens often and say, 'Today it doesn't happen often.'"
+                   ,"They celebrate the fact that {Y} hasn't happened for a short period of time in a row"
+                   ,"They can tell that {Y} has occurred just by the sound"
+
+
+                   ,"The news has a thread introducing today's {Y}"
+                   ,"The news site has a page introducing today's {Y}"
+                   ,"The news reports {Y} as minor news"
+                   ]
+              ,"Y":["any"
+                   ]
+              }
+    ,exam    =[
+               ["The Simpsons", "The opening", "X days without an accident"]
+              ,["The Simpsons", "S26E13", "Small pox free for seven years"]
+              ,["The Simpsons", "", "There is police code for a child stealing a police car."]
+              ]
+              )
+
+
+"""
+seedless_nanamagari
+
+
+path_to_different_reason
+
+main_verb -> sexual harassment -> different_verb
+agent_adjective -> sexual harasser -> different_reason
+
+main_verb -> abuse -> different_verb
+agent_adjective -> abuser -> different_reason
+
+main_verb -> shoplifting -> different_verb
+agent_adjective -> poser -> different_reason
+
+main_verb -> arrogance -> different_verb
+agent_adjective -> arrogant -> different_reason
+
+main_verb -> abuse, power harassment
+agent_adjective -> abuser, power harasser -> different_reason
+
+
+isnt_the_cause_you
+
+Bob's relationship to Ali
+ - superior
+ - equal
+ - inferior
+ - unrelated
+
+Ali's personality
+power harasser 音大, シゴキ, athlete,
+arrogant 音大, シゴキ, athlete, chef
+sexual harasser
+newbie SDGs         # 不慣れとかそういう話じゃない
+artist bassist
+stoic actor, bassit?, chef
+gen_z progamer
+
+
+pressureは、Aliが上記のいずれかの属性に属するものしかない?
+
+if "power harasser" was selected:
+    different_verb(power harassment) # This is a different genre from power harassment.
+    different_reason(power harasser) # You're a different genre from power harasser.
+
+
+
+
+
+"""
+
+
+########################################################################
+### RARELY #############################################################
+
+simple_rarely = Garnish(
+    name="simple_rarely"
+    ,tag="AtoB, BtoA, RARELY, JOKELESS_TLM"
+    ,template=[
+               "Ali: {X} -(lag)-> Bob: {Y}"
+              ]
+    ,special ={ # Add new 10 short sentences that indirectly suggest that {Y} rarely happens. Just mimic the existing items.
+               "X":["Ali remembers the number of times {Y} has happened"
+                   ,"Ali remembers the last time {Y} happened"
+                   ,"Ali's tools for {Y} are like new because they have never been used"
+                   ,"Ali's tools for {Y} are unopened because they have never been used"
+                   ,"Ali can't remember the noun that refers to {Y}."
+                   ]
+              ,"Y":["any"
+                   ]
+              }
+    ,exam    =[
+               ["The Simpsons", "", "The globe that Bart received as a gift from his grandfather is still unopened."]
+              ]
+              )
+
+
+########################################################################
+###        #############################################################
+
+
+
+to_what = Garnish(
+    name="to_what"
+    ,tag="AtoB, BtoA"
+    ,template=["Ali: {X}. - Bob: (To/ For) what?."
+              ]
+    ,special ={"X" :[
+                     "Just kidding"
+                    ,"Just a joke"
+                    ,"Just a lie"
+                    ]
+              }
+    ,exam    =[
+               ["オズワルド", "", "あぁ!? - どれに?"]
+              ,["ビスケットブラザーズ", "ぴったり", "うそうそ - どれが?"]
+              ]
+                    )
+
+
+########################################################################
+### pure_TLM ###########################################################
+lag_answer=Garnish(
+    name="lag_answer"
+    ,tag="JOKELESS_TLM, JOKE_TLM"
+    ,template=["Bob refers to {X} -(lag)-> Ali refers to {X}"]
+    ,exam=[
+      ["シソンヌ", "職員室", "言ってみろ、清水の両親シンセ奏者って - 清水の両親シンセ奏者"]
+    , ["や団", "泥棒", " - 男って大体ユニクロでパンツ買うよね - その話もう終わってんだよ"]
+    , ["オードリー", "引っ越し", "ダム ハマんなかったみたいですけどね - おいさっきのダムの話は"]
+    ]
+    )
+
+i_will_tell_x_later=Garnish(
+    name="i_will_tell_x_later"
+    ,tag="JOKELESS_TLM, JOKE_TLM"
+    ,template=["Ali says I'll tell {X} later -(lag)-> Ali tells {X}"]
+    ,exam=[
+      ["天竺鼠", "家庭教師", "(名字Xは)おいおい言います - 山田です"]
+    , ["ラブレターズ", "海", "(ゴン中山の名言Xは)あとで言うわね - ()"]
+    ]
+    )
+
+forget=Garnish(
+    name="forget"
+    ,tag="JOKELESS_TLM, JOKE_TLM"
+    ,template=["Ali can't remember {X} -(lag)-> Ali Remembers that it's {X}"]
+    ,exam=[
+      ["キングオブコメディ", "自動車教習所", "イノッチの本名って何でしたっけ? - 思い出した　井ノ原快彦だ"]
+    , ["セルライトスパ", "報道インタビュー", "千と千尋の何でしたっけ? - 神隠しだ"]
+    ]
+    )
+
+strange_expression_simple=Garnish(
+    name="strange_expression_simple"
+    ,tag="JOKELESS_TLM, JOKE_TLM"
+    ,template=["Ali uses strange_expression {X} -(lag)-> Ali uses strange_expression {X}"]
+    ,exam=[
+      ["インパルス", "雨宿り", "捨てられた子犬のようだ - 気に入ってんのか"]
+    , ["さらば青春の光", "本番行きます!", "痛さは調節できるけどね"]
+    , ["うしろシティ", "病院", "そんなんで助かんだったら 世の中誰も死なねえよ - 気に入ってんだろ"]
+    ]
+    )
+
+strange_expression_zona=Garnish(
+    name="strange_expression_zona"
     ,tag="JOKE_TLM"
-    ,exam=[["セルライトスパ", "報道インタビュー", "神隠しだ"], ["キングオブコメディ", "自動車教習所", "思い出した　井ノ原快彦だ"], ["シソンヌ", "職員室", "清水の両親シンセ奏者"]]
-    ,template=["Ali can't remember {x} -(lag)-> Ali: Remembered, it's {x}."]
+    ,template=["Ali uses strange_expression {X} multiple times -(lag)-> Ali's closed persons don't understand strange_expression {X}"]
+    ,exam=[
+      ["セルライトスパ", "報道インタビュー", "ぞな？(Aliの語尾'ぞな'が兄弟にも初見である)"]
+    , ["フランスピアノ", "クレーマー", "お馴染みじゃないの？(Aliの一人称'文庫本'が友人にも初見である)"]
+    ]
     )
-zona=Garnish(
-    name="zona"
+
+emotion_x_caused_by_trigger_y = Garnish(
+    name="emotion_x_caused_by_trigger_y"
+    ,tag="JOKELESS_TLM, JOKE_TLM"
+    ,template=["Ali says that condition {Y} causes emotion {X} -(lag)-> {X} occurs"]
+    ,exam=[
+      ["さらば青春の光", "本番行きます!", "昂ると(発作X)が出るんです -(lag)-> 発作X occurs "]
+    , ["かもめんたる", "コンタクトレンズ", ""]
+    ]
+    )
+
+lag_surprise = Garnish(
+    name="lag_surprise"
     ,tag="JOKE_TLM"
-    ,exam=[["セルライトスパ", "報道インタビュー", "ぞな？"], ["フランスピアノ", "クレーマー", "お馴染みじゃないの？"]]
-    ,template=["Ali says {strange_expression} -> Ali's closed persons don't know the {strange_expression}."]
+    ,template=[""]
+    ,exam=[
+      ["うしろシティ", "河原", "風門司君っていうの?"]
+    , ["うしろシティ", "", "お前モヒカンにしたんだ"]
+    ]
     )
-one_sided=Garnish(
-    name="one_sided"
-    ,tag="AtoB"
-    ,template=["Ali: {{one_sided_0}} - Bob: I agree. Thanks to you.", "Ali: {{one_sided_1}} - Bob: I agree. Thanks to you."]
-    ,trigger="The assigned b3scene must be some kind of competition or battle."
-    ,special = {
-        "one_sided_0" : ["It will be one-sided", "The gap will continue to widen", "The balance of power was upset", "The winner and loser are now decided", "This match is already over", "It's not even going to be close", "It's going to be a landslide win"]# A strong man has joined the team. The strong man says to his teammate:# Extend 5 new lines without any explanations. I'll run your response with eval function so don't include unnecessary characters in your response. Start answer with ```python.
-        ,"one_sided_1" : ["Can we keep this gap?", "Are we safe with this advantage?", "Should we play defensively now?", "How long can we maintain this lead?"]# A strong man has joined the team. The teammate says to the strong man:# Extend 5 new lines without any explanations. I'll run your response with eval function so don't include unnecessary characters in your response. Start answer with ```python.
-        }
-    )
-understand_why=Garnish( # sad_pastと統合？？？？？
-    name="understand_why"
+
+even_if = Garnish(
+    name="even_if"
+    ,tag="JOKELESS_TLM"
+    ,template=["Ali: {X}. -(lag)-> Bob: Even if it goes well."]
+    ,special={"X": ["If it wasn't held, everyone would be disappointed."]
+             }
+             )
+
+isnt_the_cause_you = Garnish( # GarnishAllow.high_turnover_rate, GarnishAllow.mcjob
+    name="isnt_the_cause_you"
+    ,tag="JOKELESS_TLM"
+    ,template=["Ali: Because of the{X}, {Y}. -(lag)-> Bob: Isn't the cause you?"] # This list is for create sitcom. Ali is an annoying boss. Add new 10 lines in X. Start answer with ```python. Just mimic the existing items.
+    ,special={
+              "X": [
+                   # This list is for create sitcom. Ali, an annoying boss, says "because of {X}, everyone is always in a bad mood". then Bob says "Isn't the cause you?". Add new 10 lines in X. Start answer with ```python. Just mimic the existing items.
+                    "busyness"
+                   ,"low-wage"
+                   ,"difficulty"
+                   ,"accident"
+                   ,"annoying customers"
+                   ]
+             ,"Y": [
+                    "everyone quits soon"
+                   ,"no one's smiling these days"
+                   ,"everyone is always in a bad mood"
+                   ]
+             }
+    ,exam   =[
+              ["ダンビラムーチョ", "太鼓", "そういうとこじゃない？一人になったの"]
+             ]
+             )
+
+
+'''
+tlm_connect_dot=Garnish( # sad_pastと統合？？？？？
+    name="tlm_connect_dot"
     ,tag="AtoB, BtoA, JOKELESS_TLM"
-    ,template=["Ali's {{understand_why_0}}. -(lag)-> Bob is annoyed by Ali and says: Now I understand why your {{understand_why_0}}.", "Bob's {{understand_why_0}}. -(lag)-> Ali is annoyed by Bob and says: Now I understand why your {{understand_why_0}}."]
+    ,exam=[
+     ["ダンビラムーチョ", "太鼓", "そういうとこじゃない？一人になったの"]
+    ,["ダイアン", "バーベキュー", "今度 出所してきた男達っていうドキュメンタリー番組あるんですけど、それで(テレビクルーが来ている)"] # 箱 ムキムキ パワースポット 声
+    ]
+    ,template=[
+      "Ali {item}. -(lag)-> Ali: Now I understand why Bob {{item}}."
+    , "Bob {item}. -(lag)-> Bob: Now I understand why Ali {{item}}."
+    ]
     ,special = {
-        "understand_why_0(0)" : [ # script = f"If a {x}, then at first glance it may seem harmless or positive, but it may be a sign that the child is under stress." # Append 5 new items in stress_make in English, not Japanese. Respond only the 5 items. I'll run your response through the eval function so please do not include unnecessary characters in your response.
-             "child is trying to become a counselor"
-            ,"child is short"
-            ,"child became independent so early"
-            ,"child often stay at school late"
-            ,"child is interested in politics"
-            ,"child is interested in trains"
-            ,"child likes animals more than people"
-            ,"child loves volunteering"
-            ,"child doesn't cry at all"
-            ,"child is extremely strict about rules"
-            ,"child often plays with younger children"
-            ,"child never had a rebellious phase"
-            ,"child is an avid reader beyond their years"
-            ,"child is obsessed with cleanliness"
-            ,"child is overly mature for their age"
-            ,"child has an unusually strong sense of justice"
-            ,"child is always eager to help others"
-            ,"child is excessively quiet"
-            ,"child is obsessed with cleanliness"
-            ]
-        }
+        "item(0)" :  child_damage
+
+        ,"item(1)" : [ # above is a list of foreshadowings in mystery novels. Ali is actually an ex-offender. Bob mistakes Ali for a local celebrity by the foreshadowings. Add 10 new items in English without any explanations.  Respond only the 5 items. I'll run your response through the eval function so please do not include unnecessary characters in your response.
+              "has been in the newspaper"
+            , "has been on television"
+            , "is well known in the neighborhood"
+            , "'s neighbors glance at Ali and say hello"
+            , "'s neighbors know Ali and his address"
+            , "'s neighbors are polite to Ali."
+            , "often wears sunglasses and a cap in public"
+            , "'s neighbors whisper and point when Ali walks by"
+                ]
+            }
+        )
+'''
+
+
+
+########################################################################
+### ASAGAYA ############################################################
+
+# partial_affirmative
+# ちゃんとスイカ好きなんかい
+# うるとらぶぎーず　卑怯　卑怯な手使わなくても普通に強い
+# reaped_reaped_reap nだし, mだし, lだろ
+
+########################################################################
+### LOWBROW, UNFAMOUS ##################################################
+
+lowbrow_place=Garnish(
+    name="lowbrow_place"
+    ,tag="AtoB, BtoA, REVEALER, LOWBROW, UNFAMOUS"
+    ,exam=    [
+               ["キングオブコメディ"  , "MC高橋"      , "本日は、ダイエー、赤羽店にご来店下さり"]
+              ,["ファイヤーサンダー"  , "毒舌散歩"    , "あの日の阿佐ヶ谷どうなってたん?"]
+              ,["THE GEESE"           , "大人の階段"  , "大人の階段って練馬にあるんだ"]
+              ,["スタミナパン"        , "腕相撲"      , "twitterで拡散するか '化け物　腕相撲　日体大前'"]
+              ]
+    ,template=["The name of the place is revealed when an announcement voice announces something."
+              ,"The name of the place is revealed when Ali or Bob googles something."
+              ,"The name of the place is revealed when Ali or Bob calls someone."
+              ]
+              )
+
+
+lowbrow_knowledge=Garnish(
+    name="lowbrow_knowledge"
+    ,tag="AtoB, BtoA, LOWBROW"
+    ,exam=    [
+               ["フランスピアノ", "居合の達人", "知ってますあの話? - (頷く)"]
+              ]
+    ,template=["a"
+              ]
+              )
+
+autograph_block_letter=Garnish(
+    name="autograph_block_letter"
+    ,tag="AtoB, UNFAMOUS"
+    ,exam    =[
+               ["", "", ""]
+              ]
+    ,template=[
+               "The fact of {X} indirectly reveals that Ali is an unfamous celebrity."
+              ]
+    ,special ={ # Add new 10 items in this list in python. Align the text with the existing objects.
+          "X":[
+               "His signature font is block letters"
+              ,"He remembers the last time he signed an autograph"
+              ,"He remembers the number of times he signed autographs"
+              ,"He has no signature design"
+              ]
+              }
+              )
+
+autograph_wanna=Garnish(
+    name="autograph_wanna"
+    ,tag="AtoB, UNFAMOUS"
+    ,exam    =[
+               ["Anchorman: The Legend of Ron Burgundy", "", "Lon is asked to play the flute at a party, and although he shows signs of reluctance, he actually brings along a flute."]
+              ,["和牛", "老人", "The old man carries a felt tip pen in anticipation of being asked for an autograph."]
+              ]
+    ,template=[
+               "The fact of {X} indirectly reveals that Ali is an unfamous celebrity."
+              ]
+    ,special ={ # Add new 10 items in this list in python. Align the text with the existing objects.
+          "X":[
+               "He carries around a felt and cards for autographs"
+              ,"He has his signature design"
+              ,"He carries pre-signed photos in his wallet"
+              ,"He practices his signature in private"
+              ]
+              }
+              )
+
+petty_event = Garnish(
+    name="petty_event"
+    ,tag="UNFAMOUS"
+    ,template=[
+               "It's revealed that Ali is an unfamous celebrity by the fact of events related to Ali take place in {X}."
+              ]
+    ,special= {#  Extend new 20 petty event place. Align the text with the existing objects.
+        "X":  [
+               "Community Center"
+              ,"Shopping district"
+              ,"Parking lot"
+              ,"Rental conference room"
+              ]
+              }
+              )
+
+petty_news = Garnish(
+    name="petty_news"
+    ,tag="UNFAMOUS"
+    ,template=[
+               "Ali's treatment of the featured news is smaller than {X}."
+              ,"Ali says 'My article is below {X}'s article.'"
+              ]
+    ,special= {#  Extend new 20 petty news in this list in python in Japanese. Align the text with the existing objects.
+        "X":  [
+               "鳥取市で震度1"
+              ,"女子駅伝 鳥取42位"
+              ,"期日前投票１６日から"
+              ,"安来市長選きょう告示"
+              ,"県選管立ち会い投票用紙を印刷"
+              ]
+              }
+              )
+
+
+
+########################################################################
+#### SAD_PAST ##########################################################
+
+
+
+
+
+
+#########################################################################
+#### TURN_INTO_A_PUMPKIN ################################################
+
+saraba_painter=Garnish(
+    name="saraba_painter"
+    ,tag="BtoA, AtoB, TURN_INTO_A_PUMPKIN"
+    ,exam=[
+           ["さらば青春の光", "画家", "まだ一枚も絵描いてへんやん"]
+          ,["ビスケットブラザーズ", "野犬", "さっき拾ったお気に入りの棒が"]
+          ]
+    ,template=[
+               "{X} reveals that Ali's ({.action}, {.appear}, {.suffer}, {.effort}) began just recently."
+              ]
+    ,special ={"X":[
+                    "a"
+                   ]
+              }
+              )
+
+even_though_pumpkin=Garnish(
+    name="even_though_pumpkin"
+    ,tag="BtoA, TURN_INTO_A_PUMPKIN"
+    ,exam=[
+           ["ビスケットブラザーズ", "野犬", "こんな格好までしてるのに"]
+          ]
+    ,template=[
+               "It's impossible even though I'm like this. - You have that awareness?"
+              ,"It's impossible because I like this. - You have that awareness?"
+              ]
+    ,special ={"X":[
+                    "a"
+                   ]
+              }
+              )
+
+
+
+# was practicing
+
+# 電話　七三分けで眼鏡の人?
+
+
+
+#
+#
+
+
+
+
+
+########################################################################
+#### PAST_INCIDENT #####################################################
+
+monk_kick = Garnish(
+    name="monk_kick"
+    ,tag="BtoA, PAST_INCIDENT"
+    ,exam=[["かもめんたる", "白い靴下", "この前も、京都に行った際、まあまあ有名なお坊さんに腹を蹴られました"]]
+    ,template=[
+               "Ali: I've once {X} by a {Y} {Z}."
+              ]
+    ,special ={
+               "X":[
+                    "beaten", "bullied", "ignored", "call blocking", "insulted", "called the police"
+                   ] #  Extend new 20 expressions in this list in python in English. Align the text with the existing objects.
+              ,"Y":[
+                    "famous", "veteran"
+                   ] #  Extend new 20 expressions in this list in python in English. Align the text with the existing objects.
+              ,"Z":[
+                    "monk", "crisis center staff", "life line", "counselor", "chaplain","social worker","therapist","life coach","psychiatrist","support group facilitator","school counselor","spiritual advisor"
+                   ] #  Extend new 20 expressions in this list in python in English. Align the text with the existing objects.
+              }
+              )
+
+
+
+
+
+
+########################################################################
+#### PHONE #############################################################
+
+unforgottable_night = Garnish(
+    name="unforgottable_night"
+    ,tag="BtoA, PHONE"
+    ,exam=[
+           ["かもめんたる", "募金", "忘れられない夜にしましょう"]
+          ,["さらば青春の光", "入ります", "アディオスとかいらんねん"]
+          ]
+    ,template=[
+               "A"
+              ]
+    ,special ={"X":[
+                   ]
+              }
+              )
+
+########################################################################
+#### CLOSER ############################################################
+
+other_hypo_i=Garnish(
+    name="other_hypo_i"
+    ,tag="AtoB, CLOSER, HIGH_PRIDE"
+    ,exam        =[
+                   ["さらば青春の光", "依存症", "メダルゲームやってくるわ"]
+                  ]
+    ,template    =["Ali says {X}. -> It's revealed that Ali also does other {hypoi}."
+                  ]
+    ,special={"X":[
+
+                   "'You Should quit?' Yeah it's shame. I'm giving up being a {hypo_i} and will become a {hypo_i}."
+                  ,"'You Should quit?' Don't underestimate me. I have the skills as a {hypo_i}, not only as a {hypo_i}."
+                  ,"'You Should quit?' Don't worry. Even if I quit being a {hypo_i}, I can become a {hypo_i}."
+                  # Add new 10 items without any explanations. Start answer with ```python.
+
+
+                  ,"I have my fingers in two pies. {hypo_i} and {hypo_i}"
+                  ,"I'm running with the hare and hunt with the hounds by working as a {hypo_i} and as a {hypo_i}"
+                  ,"I'm also thriving in multiple areas like {hypo_i} and {hypo_i}."
+                  ,"I'm a two-way player. I can {hypo_i} and {hypo_i}"
+                  ,"I'm wearing two hats in my career as a {hypo_i} and a {hypo_i}"
+                  ,"I'm juggling dual roles as a {hypo_i} by day and a {hypo_i} by night"
+                  ,"I'm navigating a double life, balancing my passion for {hypo_i} with my expertise in {hypo_i}"
+                  ,"God gave to me with both hands. I have the talent to be both a {hypo_i} and a {hypo_i}."
+                  ]
+                  }
+                  )
+
+
+########################################################################
+####        ############################################################
+
+
+
+lost_emotion_nikujaga=Garnish(
+    name="lost_emotion_nikujaga"
+    ,tag="AtoB, JOKELESS_TLM"
+    ,exam        =[
+                   ["a", "b", "c"]
+                  ]
+    ,template    =["Bob says things like he has no emotions and is prepared for death. -(lag)-> Ali: If you're so, why you are {X}."
+                  ]
+    ,special     ={
+                    # Bob is a poser and an edgelord, says like "I've lost all emotions", "I'm evil", "I'm prepared for death", but he's just a normal person. #  Extend new 20 expressions in this list in python in English. Align the text with the existing objects.
+                    #
+
+                   "X":[
+                   "Making a stump card"
+                  ,"Ordering a salad"
+                  ,"Cooking"
+                  ,"Paying a personal pension"
+                  ,"Listening to pop music"
+                  ,"Changing the miso soup in the set menu to pork soup"
+                  ,"Wearing a face mask"
+                  ,"Eat vegetables before meat"
+                  ]
+                  }
+                  )
+
+
+# 嫁が死んだのに味噌汁を豚汁に変更する?
+
+
+########################################################################
+########################################################################
+
+
+
+how_can_i_return_to_original_state=Garnish(
+    name="how_can_i_return_to_original_state"
+    ,tag="AtoB, BtoA"
+    ,exam=[
+           ["かもめんたる", "不思議なペン", "このまま(我々が今殺そうとしている)店長 生かされて、私と小倉君どう接したらいいの?"]
+          ]
+    ,template=["{X}. Ali is being attacked (e.g. kill, criticize, doubt) by Bob and others. Someone or Ali try to stop it. Bob says: If we stop this now, how should we treat Ali in the future?"
+              ]
+                    )
+
+########################################################################
+### partially ##########################################################
+
+partially_abled     =Garnish(
+    name="partially_abled"
+    ,tag="PARTIALLY"
+    ,exam=      [
+                 ["a", "b", "c"]
+                ,["a", "b", "c"]
+                ]
+    ,template=  [
+                ]
+    ,special =  {"X":["a"
+                     ]
+                }
+                )
+partially_good_at   =Garnish(
+    name="partially_good_at"
+    ,tag="PARTIALLY"
+    ,exam=      [
+                 ["千鳥", "妊娠", "'できちゃったみたい'の部分だけ上手い"]
+                ,["霜降り明星", "注射", "血圧測定だけ上手い"]
+                ]
+    ,template=  [
+                ]
+    ,special =  {"X":["a"
+                     ]
+                }
+                )
+partially_bad_at     =Garnish(
+    name="partially_ad_at"
+    ,tag="PARTIALLY"
+    ,exam=      [
+                 ["a", "b", "c"]
+                ,["a", "b", "c"]
+                ]
+    ,template=  [
+                ]
+    ,special =  {"X":["a"
+                     ]
+                }
+                )
+
+partially_pro     =Garnish(
+# [print(f"Bob: It would be embarrassing for you to perform in that condition. - Ali: {i}. - Bob: Why this man only professional about that?") for i in only_professional_1] <- The context is this.
+# The statements in the "only_professional_1" list are statements made by the madman Ali, who up until that point had only said funny things in his comedy, suddenly as a professional.
+# Extend 10 new statements like Stephen Edwin King. I'll run your response through the eval function so don't include unnecessary characters in your response. Start answer with ```python. Just mimic the existing items.
+    name="partially_pro"
+    ,tag="AtoB, PARTIALLY"
+    ,exam=      [
+                 ["a", "b", "c"]
+                ,["a", "b", "c"]
+                ]
+    ,template=  ["Ali: {X} - Bob: Why this guy only professional about that?"
+                ]
+    ,special =  {"X":["Even if people point fingers at me and slander me, I'll be hurt at the time, but one day I'll realize that it was a driving force for me. At that time, I'll say to those people, 'Thank you'"
+                     ,"Without light there is no shadow, without unhappiness there is no happiness, without dishonor there is no honor, I'm prepared"
+                     ,"I've not failed, I've just found 10,000 ways that won't work, I'll try to fail as much as I want"
+                     ,"You miss 100% of the shots you don't take, and I'm going to take every shot I can, starting now"
+                     ,"The path to success is paved with failures, and I'm ready to embrace every one of them"
+                     ,"Mediocrity is a choice, and I choose to be extraordinary. I'll give everything I have, every single day"
+                     ]
+                }
+                )
+
+
+
+
+
+
+########################################################################
+########################################################################
+
+
+# サインに対する対応 unfamous
+
+
+'''
+carry_around=Garnish(
+    name="carry_around"
+    ,tag="AtoB, FREQUENCY"
+    ,exam=[
+     ["The Simpsons", "?", ""]
+    ,["Anchorman: The Legend of Ron Burgundy", "same as left", "At a concert, someone is asked to play the flute, and after some show of reluctance, he finally gives in and pulls out a flute from his sleeve."]
+    ,["和牛", "老人", "サインペンも持っとる"]
+    ,["ニッポンの社長", "手術", "外科医が医師免許を持ち歩いている"]
+    ]
+    ,template=[
+              ]
+              )
+'''
+
+
+########################################################################
+########################################################################
+
+
+
+
+
+########################################################################
+########################################################################
+@dataclass
+class Nanamagari:
+    ALL_NANAMAGARI: ClassVar[List['Nanamagari']] = []
+    q_or_not:str
+    name:list
+    status:list
+    income:list
+    outcome:list
+    sad_past:list
+    damage:list
+
+    def __post_init__(self):
+        Nanamagari.ALL_NANAMAGARI.append(self)
+    @staticmethod
+    def nanamagari_tablize():
+        col_not_q=[]
+        col_yes_q=[]
+
+        fline_notice=["You {.status}?", "Why was a guy like this able to become {.status}?"]
+
+        fline_name_notice=["Ali: I can't make {.name} (angry/ sad). -> Bob: What? -> Bob: {fline(notice)}"]
+        fline_income_notice=["Ali: (Envy?/ Wait until) I receive {.income}. -> Bob: Don't do {X} with {.income} -> Bob: {fline(notice)}", "Ali: {dirty_money_income} -(lag)-> Bob: Don't do {X} with {.income} -> Bob: {fline(notice)}"]
+        fline_outcome_notice=["Ali: (I can't cuz I just paid/ I'm behind on) {.outcome}. -> Bob: Don't do {X} with {.outcome} -> Bob: {fline(notice)}", "Ali: {dirty_money_outcome} -(lag)-> Bob: Don't do {X} with {.outcome} -> Bob: {fline(notice)}"]
+        fline_sad_past=["Ali: {.sad_past} -(lag)-> Bob: {fline(notice)}, Bob: Did you {X} even though your {.sad_past}?"]
+        fline_damage_notice=["Ali: Recently, my {.damage} -> Bob: I don't wanna hear. -> Bob: {fline(notice)}", "Ali: So, my {.damage}? -> Bob: You realize this too late. -> Bob: {fline(notice)}"]
+        fline_damage=["Ali {.damage} -(lag)-> Bob: Now I understand why your {.damage}", "Bob {.damage} -(lag)-> Ali: Now I understand why your {.damage}"]
+
+
+
+
+        fline_notice_q=["You {.status-i}?", "Why you {.status-i} even though you {.status-s}"]
+
+        note=["If you are using these objects to generate an HSI type sketch, you can substitute {X} with an ivfact such as .stereo, .action, etc."]
+
+        for i in Nanamagari.ALL_NANAMAGARI:
+            if not i.q_or_not:
+                col_not_q.append(f"<tr><td>{i.name}</td><td>{i.status}</td><td>{i.income}</td><td>{i.outcome}</td><td>{i.sad_past}</td><td>{i.damage}</td></tr>")
+            elif i.q_or_not:
+                col_yes_q.append(f"<tr><td>{i.name}</td><td>{i.status}</td><td>{i.income}</td><td>{i.outcome}</td><td>{i.sad_past}</td><td>{i.damage}</td></tr>")
+        nanamagari_tablize_result = f"""
+        <table>
+        <tr><th id="th_lime" colspan="6">Nanamagari Instances                           </th></tr>
+        <tr><th>.name</th><th>.status</th><th>.income</th><th>.outcome</th><th>sad_past</th><th>.damage  </th></tr>
+        {''.join(col_not_q)}
+        </table>
+
+        <table>
+        <tr><th id="th_lime">Nanamagari Flines                                                                  </th></tr>
+        <tr><th>(0)fline(notice)               </th><td colspan="2">{fline_notice}                              </td></tr>
+        <tr><th>(1)fline(.name+notice)         </th><td colspan="2">{fline_name_notice}                         </td></tr>
+        <tr><th>(1)fline(.income+notice)       </th><td colspan="2">{fline_income_notice}                       </td></tr>
+        <tr><th>(1)fline(.outcome+notice)      </th><td colspan="2">{fline_outcome_notice}                      </td></tr>
+        <tr><th>(1)fline(.sad_past)            </th><td colspan="2">{fline_sad_past}                            </td></tr>
+        <tr><th>(1)fline(.damage+notice)       </th><td colspan="2">{fline_damage_notice}                       </td></tr>
+        <tr><th>(1)fline(.damage)              </th><td colspan="2">{fline_damage}                              </td></tr>
+        <tr><th>NOTE                           </th><td colspan="2">{note}                                      </td></tr>
+        <tr><th>TAG                            </th><td colspan="2">JOKELESS_TLM, JOKE_TLM                      </td></tr>
+        </table>
+
+        <table>
+        <tr><th id="th_lime" colspan="6">Nanamagari-q Instances                           </th></tr>
+        <tr><th>.name</th><th>.status</th><th>.income</th><th>.outcome</th><th>sad_past</th><th>.damage  </th></tr>
+        {''.join(col_yes_q)}
+        </table>
+
+        <table>
+        <tr><th id="th_lime">Nanamagari-q Flines                                                                </th></tr>
+        <tr><th>(0)fline(notice)               </th><td colspan="2">{fline_notice_q}                            </td></tr>
+        <tr><th>(1)fline(.name+notice)         </th><td colspan="2">{fline_name_notice}                         </td></tr>
+        <tr><th>(1)fline(.income+notice)       </th><td colspan="2">{fline_income_notice}                       </td></tr>
+        <tr><th>(1)fline(.outcome+notice)      </th><td colspan="2">{fline_outcome_notice}                      </td></tr>
+        <tr><th>(1)fline(.sad_past)            </th><td colspan="2">{fline_sad_past}                            </td></tr>
+        <tr><th>NOTE                           </th><td colspan="2">{note}                                      </td></tr>
+        <tr><th>TAG                            </th><td colspan="2">JOKELESS_TLM, JOKE_TLM                      </td></tr>
+        </table>
+
+        """
+        return nanamagari_tablize_result
+
+
+'''
+
+nanamagari_child   = Nanamagari("", ["child"], ["be married", "be a parent", "be divorcee"], ["child support"], ["child support", "tuition"], ["child has a cancer"]
+    ,[
+         "'s child is trying to become a counselor"
+        ,"'s child is short/ has stopped growing"
+        ,"'s child became independent so early"
+        ,"'s child often stay at school late"
+        ,"'s child is interested in politics"
+        ,"'s child is interested in trains"
+        ,"'s child likes animals more than people"
+        ,"'s child loves volunteering"
+        ,"'s child doesn't cry at all"
+        ,"'s child is extremely strict about rules"
+        ,"'s child often plays with younger children"
+        ,"'s child never had a rebellious phase"
+        ,"'s child is an avid reader beyond their years"
+        ,"'s child is obsessed with cleanliness"
+        ,"'s child is overly mature for their age"
+        ,"'s child has an unusually strong sense of justice"
+        ,"'s child is always eager to help others"
+        ,"'s child is excessively quiet"
+        ,"'s child is obsessed with cleanliness"
+    ])
+
+
+
+
+
+nanamagari_wife    = Nanamagari("", ["wife"], ["be married"], ["child support"], ["child support"], ["wife has a cancer"]
+, [])
+
+nanamagari_regular_employee = Nanamagari("", ["part-time worker", "suboridinate", "client(取引先)"], ["be a reguilar employee"], ["bonus"], ["income tax"], []
+, [])
+
+nanamagari_mcjob_worker = Nanamagari("q", ["full-time employee"], ["be a mcjob worker"], ["バイト代"], ["transportation fee"], []
+, [])
+
+nanamagari_refugee = Nanamagari("q", ["Immigration bureau"], ["be a refugee"], ["Refugee benefits"], [], ["homeland is at war"]
+, [])
+
+nanamagari_unemployed = Nanamagari("q", [], [], [], [], []
+, [])
+
+tables.append(coloring(Nanamagari.nanamagari_tablize()))
+'''
+
+
+
+
+
+
+
+
+dont_touch_dog = Garnish(
+    name="dont_touch_dog"
+    ,tag="JOKELESS_TLM"
+    ,exam=[["オズワルド", "", "道徳0の奴は犬に触るな"]]
+    ,template=[ # In a sitcom, Bob says these lines to a madman.
+               "Bob: People who get so absprbed in that activity shouldn't {X}."
+              ]
+    ,special ={
+               "X": [
+                     "touch dogs", "get involved with children", "do work that requires knives", "drive vehicles", "manage other people's money", "have a child", "work in high-stress environments", "handle firearms", "teach in schools", "care for the elderly", "work in law enforcement"
+                    ] #  Extend new 20 expressions in this list in python in English. Align the text with the existing objects.
+              }
+              )
+
+
+
+
+# "Ali: Whenever I saw them, everyone had a gloomy look on their face. - Bob: Because you came there then."
+
+#### ABC
+
+hogushimizu = Garnish(
+    name="hogushimizu"
+    ,tag="ABC"
+    ,exam=[
+        ["シティホテル3号室", "内部告発", ""]
+        ,["フランスピアノ", "ネタ合わせ", ""] # ヨーヘーの母親が自分と同じワードセンス ヨーヘーの母親のツッコミのあとに中川が同じツッコミ
+    ]
+    ,template=["Bob says to Ali: {X} -(lag)-> Cho says to Ali: {X}"
+              ,"Ali says to Bob: {X} -(lag)-> Cho says to Bob: {X}"
+              ]
+              )
+
+
+
+
+
+pretend_to_be_i = Garnish(
+    name="pretend_to_be_i"
+    ,tag=""
+    ,template=[
+         "Ali, a {Y}, is pretending to be a {X}."
+        ,"Ali, a {Y}, is more discriminated than {X}."
+        ,"Ali, a {Y}, is discriminated by {X}."
+        ,"{Y} and {X} are defended together."
+    ]
+    ,special={
+        "X": [ # Discriminated occupations. Extend new 20 expressions in this list in python in English. Align the text with the existing objects.
+              "garbage collector"
+             ,"abortionist"
+             ,"pushier"
+             ,"pimp"
+             ,"hooker"
+             ,"slaughterhouse worker"
+             ,"mortician"
+             ,"sewage worker"
+             ,"stripper"
+             ,"scammer"
+             ,"beggar"
+             ,"prisoner"
+             ]
+             }
+             )
+diane_bbq = Garnish(
+    name="diane_bbq"
+    ,tag="JOKELESS_TLM"
+    ,exam=[["ダイアン", "バーベキュー", ""]]
+    ,template=[
+               "Ali boasts that he {X} -(lag)-> It's revealed that the reason he {X} was to be mocked, not a good reason."              ]
+    ,special={ #  Extend new 20 expressions in this list in python in English. Align the text with the existing objects. This list is for creating comedy.
+        "X": [ "was photographed"
+              ,"was asked to two-shot"
+              ,"was buzzed"
+              ,"was featured in the magazine"
+              ,"was featured in a commercial"
+              ,"is well-known in the neighborhood"
+              ,"was featured in a news program"
+              ,"was asked for an autograph"
+              ,"was recognized on the street"
+             ]
+             }
+             )
+
+
+
+were_you_aware_of_that = Garnish(
+    name="were_you_aware_of_that"
+    ,tag="JOKELESS_TLM, TURN_INTO_A_PUMPKIN"
+    ,template=["So, I (didn't/ couldn't) do it because I would be suspicious because I'm a {hypo_i}."
+              ,"So, I (didn't/ couldn't) do it because I would be suspicious because I'm a {sad_past}."
+              ]
+              )
+
+it_is_fearing_not_cheering = Garnish(
+    name="it_is_fearing_not_cheering"
+    ,tag="JOKELESS_TLM"
+    ,template=[
+              "Ali: {X} - Bob: It's because they are afraid of you."
+              ]
+    ,special ={
+               "X":[# This lines are for sitom. Ali, the speaker, is a madman. Ali misinterprets the actions of those around him that are out of fear of him as being well-intentioned. Extend new 20 lines. Start answer with ```python
+                    "They do the scissors work in my place"
+                   ,"They do the child-related tasks in my place"
+                   ,"They handle the dangerous goods in my place"
+                   ,"They assigned me to a separate room"
+                   ,"They don't assign me the management of their food"
+                                      ,"They took over the mentally demanding tasks for me" # Dangerous men shouldn't do mentally demanding tasks.
+
+
+
+
+                   ]
+              }
+              )
+
+
+parasite_single_hat=Garnish(
+    name="parasite_single_hat"
+    ,tag="OPENER"
+    ,template=[# This lines are for sitom. Ali, the speaker, is a madman. Ali misinterprets the actions of those around him that are out of fear of him as being well-intentioned. Extend new 20 lines. Start answer with ```python
+               "Ali: So I said, 'Don't {Z}, you're a {Y}.'"
+              ]
+    ,special ={
+               "Z":["parasite single", "bumpkin", "debtor", "40s"]
+              ,"Y":["Put on a hat", "buy an ipod", "buy indirect lighting"]
+              }
+              )
+
+
+
+
+
+
+
+pizza_face = Garnish(
+    name="pizza_face"
+    ,tag="AtoB, OPENER"
+    ,template=[
+       "Ali: I don't like people seeing my face when I {X}."
+      ,"Ali: What kind of expression should I make when I {X}?"
+              ]
+    ,exam=[
+               ["かもめんたる","ペン","ピザ注文するところ見られるの苦手なんだよね"]
+              ,["かもめんたる","正しい顔", "ドッジボールで外野行く時ってどんな顔すればいいの?"]
+              ]
+    ,special={
+              "X": [ # "Ali: I don't like people seeing my face when I {X}. Especially women." Extend new 20 X that start with 'am waiting' in python without any explanations. Respond with only new items.
+                    "order takeout"
+                   ,"withdraw child support"
+                   ,"search for a penny in my wallet"
+                   ,"park in reverse"
+                   ,"do a circle of wisdom"
+                   ,"do mental calculations to split the bill"
+                   ,"blow out birthday candles"
+                   ,"try to catch falling objects"
+                   ,"haggle"
+                   ,"use self-checkout"
+                   ,"tell the clerk that I have a coupon"
+                   ,"am being fooled by an optical illusion"
+                   ,"attempt to solve a Rubik's cube"
+                   ,"switch to polite language when I realize the other person is older than me."
+                   ,"discuss politics"
+                   ,"notice the rain"
+                   ,"try to read small print"
+                   ,"give directions"
+                   ,"am watching the timing for a toast"
+                   ,"am watching the timing for the microwave to finish"
+                   ,"am watching the timing for the traffic light to change"
+                   ,"am watching the timing for the perfect moment to end a phone call"
+                   ,"am watching the timing for the traffic to clear"
+                   ,"am watching the timing for the perfect moment to make a joke"
+                   ,"am watching the timing for enter a revolving door"
+                   ,"am waiting for the vending machine roulette to finish"
+                   ,"am waiting for the concert to begin"
+                   ]
+             }
     )
 
 
+# rehabilitate
+#   I'm sorry for teach SDGs
+#
 
-tables.append(coloring(Garnish.garnish_table()))
+
+'''
+dont_tell_anyone = Garnish(
+    name="dont_tell_anyone"
+    ,tag="AtoB, OPENER"
+    ,template=[
+        "Ali: Don't tell anyone {X}."
+              ]
+    ,special={
+              "X": [ # "Ali: Don't tell anyone I {X}. Especially the women at work." Extend new 20 X in python without any explanations.
+                    "I was practicing ordering at Subway"
+                   ,"I wear fashion glasses"
+                   ,"that my dad got his moped license last year"
+                   ,"my dad wears colored contact lenses"
+                   ,"my dad switched to contact lenses"
+                   ,"that I changed my hair to brown after entering the workforce"
+                   ,"I read educational books available at convenience stores"
+                   ,"I'm pretending to be from the capital on dating apps"
+                   ,"that I started smoking after I entered the workforce"
+                   ,"my dad doesn't put cigarette smoke in his lungs"
+                   ,"I can wiggle my ears"
+                   ]
+             } # これが生成不可???
+'''
+
+'''
+resident_tax = Garnish(
+    name="resident_tax"
+    ,tag="AtoB, OPENER"
+    ,template=[
+        "Ali: {X}."
+              ]
+    ,special={
+              "X": [ # Extend new 20 X in python without any explanations. This list is for a sictom.
+                    "I try to stay in Tokyo as much as possible because it would be a waste of the metropolitan resident tax."
+                   ,"I try to stay at my home as much as possible because it would be a waste of the rent."
+                   ]
+             }
+'''
+
+
+
+
+# dirty moneyは掴みに使える "ノミって感情あるんだ"みたいに
+
+# (dirty_money_income + Nanamagari.fline(.income+notice))
+
+
+######################################################################################
+@dataclass
+class DidDontStatus:
+    ALL_DidDontStatus: ClassVar[List['DidDontStatus']] = []
+    name:str
+    income:list
+    relationship:list
+    def __post_init__(self):
+        DidDontStatus.ALL_DidDontStatus.append(self)
+    @staticmethod
+    def diddontstatus_table():
+        col_x=[]
+        for i in DidDontStatus.ALL_DidDontStatus:
+            col_x.append(f"<tr><td>{i.name}</td><td>{i.income}</td><td>{i.relationship}</td></tr>")
+        diddontstatus_table_result = f"""
+            <table>
+            <tr><th id="th_lime" colspan="3">DidDontStatus</th></tr>
+            <tr><th>TAG             </th><td colspan="2">JOKELESS_TLM, JOKE_TLM                                                                             </td></tr>
+            <tr><th>TEMPLATE        </th><td colspan="2">Ali: {{path_income}} -> Bob: Don't do {{stereo, action, effort, suffer}} with {{income}} -> Bob: Then, {{lag_point}}          </td></tr>
+            <tr><th>path_to_income  </th><td colspan="2">I (can/ could) do that with my {{income}}.,                                                        </td></tr>
+            <tr><th>TEMPLATE        </th><td colspan="2">Ali: {{path_relationship}} -> Bob: What? -> Bob: Then, {{lag_point}}                               </td></tr>
+            <tr><th>path_relationship</th><td colspan="2">My {{relationship}} supports me at that.,                                                         </td></tr>
+            <tr><th>lag_point       </th><td colspan="2">You're {{name}}?, Why was a guy like this able to become {{name}}?, Is a guy like this {{name}}?   </td></tr>
+            <tr><th>name            </th><th>income</th><th>relationship</th></tr>
+            {''.join(col_x)}
+            </table>
+            """
+        return diddontstatus_table_result
+
+be_married            = DidDontStatus("married"             , ["wife's money"]  , ["wife", "child"])
+be_divorcee           = DidDontStatus("divorcee"            , ["child support"] , ["ex-wife", "current wife"])
+be_a_college_graduate = DidDontStatus("a college graduate"  , ["scholarship"]   , [])
+
+be_a_regular_employee = DidDontStatus("a regular employee"  , ["bonus"]         , ["suboridinate"])
+have_many_friends     = DidDontStatus("have many friends"   , []                , ["friend"])
+be_a_parent           = DidDontStatus("a parent"            , ["child support"] , ["child", "wife"])
+
+######################################################################################
+
+
+
+
 
 
 ######################################################################################
 
-stress_make=[ # delete later
- "child is trying to become a counselor"
-,"child is short"
-,"child became independent so early"
-,"child is interested in politics"
-,"child is interested in trains"
-,"child likes animals more than people"
-,"child loves volunteering"
-,"child doesn't cry at all"
-,"child is extremely strict about rules"
-,"child often plays with younger children"
-,"child never had a rebellious phase"
-,"child is an avid reader beyond their years"
-,"child is obsessed with cleanliness"
-,"child is overly mature for their age"
-,"child has an unusually strong sense of justice"
-,"child is always eager to help others"
- "child speaks in third person"
-,"child insists on wearing a helmet indoors"
-,"child collects rocks and calls them their 'pets'"
-,"child is obsessed with even numbers"
-,"child only eats foods that start with the letter 'P'"
+# Recently, my {child_damage}. -> I don't wanna hear that. -> Why was a guy like this able to (become) married?
+
+
+
+
+
+
+# now_i_understand "Ali: Now I understand why your {x}.", "Bob: Now I understand why your {x}."
+# reldam_simple "Ali: Recently, my {x} -> Bob: I don't wanna hear.", "Ali: So my {x}? -> Bob: You realize this too late."
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+child_damage=[# script = f"If a {x}, then at first glance it may seem harmless or positive, but it may be a sign that the child is under stress." # Append 5 new items in stress_make in English, not Japanese. Respond only the 5 items. I'll run your response through the eval function so please do not include unnecessary characters in your response.
+
+             "'s child is trying to become a counselor"
+            ,"'s child is short/ has stopped growing"
+            ,"'s child became independent so early"
+            ,"'s child often stay at school late"
+            ,"'s child is interested in politics"
+            ,"'s child is interested in trains"
+            ,"'s child likes animals more than people"
+            ,"'s child loves volunteering"
+            ,"'s child doesn't cry at all"
+            ,"'s child is extremely strict about rules"
+            ,"'s child often plays with younger children"
+            ,"'s child never had a rebellious phase"
+            ,"'s child is an avid reader beyond their years"
+            ,"'s child is obsessed with cleanliness"
+            ,"'s child is overly mature for their age"
+            ,"'s child has an unusually strong sense of justice"
+            ,"'s child is always eager to help others"
+            ,"'s child is excessively quiet"
+            ,"'s child is obsessed with cleanliness"
 ]
+
+
+
+
+
+
+
+
+
+
+# unhappy.尿路結石, パワーストーンを削って飲んでる
+# unhappy.変な声になる, 変な声である
+'''
+simple_tlm = Garnish( # それで尿路結石
+    name="simple_tlm"
+    ,tag="JOKE_TLM, JOKELESS_TLM, AtoB, BtoA"
+    ,exam=[
+      ["セルライトスパ", "報道インタビュー", "神隠しだ"]
+    , ["キングオブコメディ", "自動車教習所", "思い出した　井ノ原快彦だ"]
+    , ["シソンヌ", "職員室", "清水の両親シンセ奏者"]
+    , ["ラブレターズ", "海", "(ゴン中山の名言)"]
+    , ["や団", "泥棒", "男って大体ユニクロでパンツ買うよね"]
+    , ["オードリー", "引っ越し", "おいプレハブお前はどう思う"]
+    , ["オードリー", "引っ越し", "おいさっきのダムの話は"]
+    , ["天竺鼠", "家庭教師", "山田です"]
+    ]
+    ,template=[
+      "Ali can't remember {x} -(lag)-> Ali Remembered that it's {x}"
+    , "Bob refers to {x} -(lag)-> Ali refers to {x}"
+    , "Ali says he'll refer to {x} later -(lag)-> Ali refers to {x}"
+    ]
+    )
+'''
+
+
+
+
+
+#塩ぶっかけるぞ　海に帰りたい　塩駄目なの
+
+# だーりんず　なんでホールあいつ一人なん
+# スタミナパン　レストラン　ウンコ行きすぎだろ
+
+
+
+
+
+nanamagari_ring=Garnish(
+    name="nanamagari_ring"
+    ,tag="AtoB"
+    ,exam=[["ななまがり", "", ""]]
+    ,template=[
+      "Ali says to Bob: Why are you {X} if you're that kind of person?"
+    ]
+    ,special = { # In a sitcom, Ali says lines below to Bob, a madman. Add new 20 ones without any explanations. Start answer with ```python
+    "X" : [ # This comedic syntax achieves its humor by pointing out that the madman is, surprisingly, partly normal.
+         "being married"
+        ,"being a collage graduate"
+        ,"going to vote"
+        ,"being a parent"
+        ,"being a full-time worker"
+        ,"being a servant"
+        ,"paying taxes"
+        ,"having a driver's license"
+        ,"attending church"
+        ,"having a savings account"
+        ,"volunteering"
+        ,"coaching little league"
+        ,"attending PTA meetings"
+        ,"having a LinkedIn profile"
+        ,"filing insurance claims"
+        ,"donating blood"
+        ,"having a retirement plan"
+        ,"having a library card"
+        ,"being a registered organ donor"
+        ,"having a frequent flyer account"
+        ]
+    }
+    )
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#################################################################
+
+
+are_you_ok=Garnish(
+    name="are_you_ok"
+    ,tag="AtoB, BtoA"
+    ,exam=[
+     ["チュートリアル", "チリンチリン", "座るか?"]
+    ,["ロングコートダディ", "花屋", "一旦休憩しますか?"]
+    ,["かもめんたる", "偽りの性癖", "水かなんか飲んで"]
+    ,["かもめんたる", "I 脳 You", "どうした?"]
+    ]
+    ,template=[
+     ["Ali tells Bob, who is fed up: {item}"]
+    ,["Bob tells Ali, who is fed up: {item}"]
+    ]
+    ,special={
+    "item_0" : [
+    # The sentences in the are_you_ok list are lines uttered by a madman in a sitcom, who mistakenly believes a character who does not understand what he is saying to be mentally unstable.
+    # Extend new 10 sentences in English, not Japanese. I'll run your response through the eval function so don't include unnecessary characters in your response.
+    # Use the existing types. Don't create new types. Start answer with ```python
+
+
+     "Are you OK? Would you like some water?"  # Type_Offer
+    ,"Are you OK? Do you want to sit down for a while?"  # Type_Offer
+    ,"Are you worried? Want to go for a drink?" # Type_Offer
+    ,"Shall I bring a chair?" # Type_Offer
+    ,"I'll drive instead." # Type_Offer
+    ,"Would you like to get some fresh air?" # Type_Offer
+    ,"Are you tired? Are you busy at work?" # Type_Cause_Investigation
+    ,"How many cups have you had now?" # Type_Cause_Investigation
+    ,"Drunk?" # Type_Cause_Investigation
+    ,"Do you know about industrial physicians?" # Type_Do_You_Know
+    ,"Which hospital is that you mentioned earlier?" # Type_Mentioned
+    ,"What is that 'chronic illness' you mentioned earlier?" # Type_Mentioned
+
+    ,"Are you hearing voices?" # Type_Cause_Investigation
+    ,"Have you been sleeping well?" # Type_Cause_Investigation
+    ,"I'm here if you need someone to talk to, no judgment." # Type_Offer
+    ,"Would you like me to accompany you to your next appointment?" # Type_Offer
+    ,"When was the last time you saw your therapist?" # Type_Cause_Investigation
+    ,"What was that support group you mentioned before?" # Type_Mentioned
+    ,"What was that medication you mentioned earlier?" # Type_Mentioned
+    ,"Maybe you should take a deep breath. Want to count to ten with me?"
+    ,"You look stressed. Have you tried meditation?"
+    ,"Do you have emergency contacts?"
+    ,"Can you follow my finger with your gaze?"
+    ,"When was the last time you ate something?"
+    ,"I think you shouldn't drive now."
+    ,"Would you like to lie down for a bit?"
+    ,"Shall I get you a blanket?"
+    ,"Have you been eating properly lately?"  # Type_Cause_Investigation
+    ,"Do you know about the importance of circadian rhythms?"  # Type_Do_You_Know
+    ,"Are you OK? Should I call someone for you?" # Type_Offer
+    ,"Would you like me to explain what a panic attack is?" # Type_Offer
+    ]
+    }
+    )
+
+
+
+
+
+not_fail=Garnish(
+    name="not_fail"
+    ,tag="AtoB"
+    ,exam=[["さらば青春の光", "猿回し", "勘ええやないか"]]
+    ,template=["Ali: {{not_fail_0}} -> Bob: It's the opposite."]
+    ,special={"not_fail_0" : [
+
+            # Start answer with ```python
+            # Ali is a fool who made the wrong career choice. Bob is a guy who opposes Ali's career choice. Add new 10 lines in this list for a sitcom.
+            # Each line must follow this format: "Ali: (something A) is (bad adjective). I (got damage) - Bob: It's because (something A) is (not bad adjective A)."
+            # Only respond with new lines you made.
+
+             "Ali: The counselor didn't suit me. I lost my passion on the work. - Bob: It's because the counselor was right for you."
+            ,"Ali: The medication didn't suit me. I lost my passion on the work. - Bob: It's because the medication was right for you."
+            ,"Ali: The fortune teller's prediction was incorrect. I followed his instructions and ended up getting a regular job. - Bob: It's because the prediction was correct."
+            ,"Ali: My parents hate me. They beat me up so that I would quit my job. - Bob: It's because your parents love you."
+            ,"Ali: The career counselor is incompetent. I lost my passion on the work. - Bob: It's because the counselor is competent"
+            ,"Ali: The loan examiner is bad guy. He didn't give me loan. - Bob: It's because the examiner is good guy."
+            ,"Ali: The training program is ineffective. I developed anxiety. - Bob: It's because the training program is effective."
+            ,"Ali: The training school is incompetent. I nearly gave up on my dream. - Bob: It's because the training school is competent."
+            ,"Ali: He is sloppy at his job. He didn't assign me to the job. - Bob: It's because the man is not sloppy."
+            ]
+        }
+    )
+
+'''
+You {x}?
+That's the bad thing about {x}.
+I understood why he {x}.
+It {x} after all.
+I don't think the abonormality is not caused only by the fact that he {x}.
+I don't think the abonormality is not caused by the fact that he {x}.
+'''
+
+
+
+be_serious = Garnish( # superiority low
+    name="be_serious"
+    ,tag="AtoB, JOKELESS_TLM, parotting"
+    ,template=["Ali: {X}. Why don't you get serious about this activity? - Bob: Because I {X}."] # The activity Ali mentions is a petty activity.
+    ,special = {
+                "X" : [ # In a sitcom, Ali, who is engaged in a trivial activity, exhorts Bob to get serious about this activity by using the word {X}. Bob returns the word {X} to Ali.
+                       "be serious about one's life"
+                      ,"use one's time effectively"
+                      ,"focus on meaningful activities"
+                      ,"avoid wasting time on trivialities"
+                      ,"concentrate on personal growth"
+                      ] # Extend 5 new lines without any explanations. I'll run your response with eval function so don't include unnecessary characters in your response. Start answer with ```python.
+               }
+    )
+
+
+
+# barrier
+#  inexperienced
+#  public school
+
+fanmian_teacher = Garnish(
+    name="fanmian_teacher"
+    ,tag="JOKELESS_TLM, AtoB"
+    ,template=["Ali: I'm amazing. {X}. - Bob: It's because they're using you as a bad example."
+              ,"Ali: I'm amazing. {X}. - Bob: I guess they wanna see the underdog."
+              ]
+    ,special = {
+               "X" : [ # This list is for a sitcom. Ali is a poor stupid.
+
+                      "I was told, 'Seeing you made me want to study harder'"
+                     ,"Students who saw me stopped being delinquent"
+                     ,"After watching me, the number of people who aspire to the same profession as me decreased"
+                     ,"My videos are popular with poor people, maybe I'm inspiring them."
+                     ,"The local charity said I've boosted their donations significantly" # It's especially good!
+                     # Extend 5 new lines without any explanations. I'll run your response with eval function so don't include unnecessary characters in your response. Start answer with ```python.
+                     ,"I was invited to give a lecture on career choices"
+                     ,"Teachers say I've inspired a whole generation to work harder"
+                     ]
+                }
+                )
+
+
+
+
+
+'''
+enter_the_room = Garnish(
+    name="enter_the_room"
+    ,tag="JOKELESS_TLM"
+    ,template=["Ali: {X}. -> Bob: That's because you came at that time."]
+    ,special = {
+               "X": [
+                     "Everyone there always has gloomy expressions."
+                    ,""
+                    ]
+               }
+    )
+'''
+
+
+# これが引きこもりのリズムか
+
+
+
+
+
+
+special_ocassion=Garnish(
+    name="special_ocassion"
+    ,tag="JOKELESS_TLM"
+    ,exam=[["や団", "泥棒", "こいつ今日誕生日なんだぞ"]]
+    ,template=["It's revealed that a subject is on a {special_occasion_0} -> The subject suffers a terrible fate -> Bob: He's on a {special_occasion_0}."]
+    ,special ={"special_occasion_0": ["Birth day"
+              ]
+              }
+              )
+
+
+
+'''
+
+
+pride_heel=Garnish(
+    name="pride_heel"
+    ,tag="AtoB"
+    ,template=["Ali: "]
+    ,special={
+        "item": [
+         "with high pride and high heel"
+        ]
+        }
+    )
+
+homer_nemeth=Garnish(
+    name="homer_nemeth"
+    ,tag=""
+    ,template=["Ali: "]
+    ,exam=[
+      ["the Simpsons", "S9E24", "Homer, searching for the lost Lisa, enters the museum and comes out wearing merchandise."]
+    , ["さらば青春の光", "ダフ屋", "去年の三日目にキャップ買ってる"]
+    ]
+    ,special={
+        "item": [
+         "aaa"
+        ]
+        }
+    )
+
+be_married=Garnish(
+    name="be_married"
+    ,tag=""
+    ,template=["Ali: "]
+    ,exam[
+     []
+    ]
+    ,special={
+        "item" :[
+            # This is a list for sitcom. It's funny when it becomes clear that a madman is fulfilling his social obligation.
+            #"a social obligation(ways to reveal the fact that the madman is fulfilling social obligations)"
+             "be married(I was)"
+            ,"have been married()"
+            ,"be a college graduate()"
+            ,"be a regular employee()"
+            ,"have many friends()"
+            ,"be a parent()"
+            ]
+            }
+            )
+'''
+
+lista = [ # List of typical behaviors that normal people exhibit towards insane people in sitcoms.
+"Point out abnormality"
+,"Order to correct abnormality"
+,"Order to stop certain activities"
+,"Order for compensation"
+,"Worry/ sympathize"
+,"Avoid/ Ignore"
+] # Extend 5 new lines without any explanations. I'll run your response with eval function so don't include unnecessary characters in your response. Start answer with ```python.
+
+#嫁の小遣いでタトゥー入れんなよ あとなんで結婚できたんだよ
+#養育費でタトゥー入れんなよ あとなんで結婚できたんだよ
+#上司に見られたくないんで やめちまえよ あとこの感じで正社員なのかよ
+#子供に見られたくないんで やめちまえよ あとこの感じで結婚できたのかよ
+
+
+tables.append(coloring(Garnish.garnish_table()))
+tables.append(coloring(DidDontStatus.diddontstatus_table()))
+
+######################################################################################
+
+
+
 
 
 
@@ -444,35 +2369,6 @@ crime_report_vocabulary_verb=["に手を染める", "という被害", "に漬�
 
 
 ###################################################################################################
-# [print(f"Ali: Am I weird? I {i}. - Bob: I don't think your abnormality is caused only by the fact that you {i}.", f"Ali: Am I weird? I {i}. - Bob: I don't think your abnormality is related to the fact that you {i}.") for i in icause_adhd]
-# icause_adhd are lines that Ali, a madman, says in a sitcom to justify his abnormality. Extend 10 new items. I'll run your response through the eval function so don't include unnecessary characters in your response.  Start answer with ```python.
-
-icause_adhd=[
- "have ADHD"
-,"be a returnee"
-,"grew up on an island"
-,"have a mental illness"
-,"have ADHD"
-,"be upset about a death in my family"
-,"be raised by a single parent" # GPT4
-,"be adopted" # GPT4
-,"be bullied in school"# GPT4
-]
-
-table_icause_adhd=f"""
-<table>
-<tr><th colspan = "2">icause_adhd                                                                                                                           </th></tr>
-<tr><th>TAG         </th><td> AtoB, garnish                                                                                                                 </td></tr>
-<tr><th>USAGE EX.   </th><td> キングオブコメディ:お見合い, かもめんたる:宇宙人                                                                              </td></tr>
-<tr><th rowspan = "2">Template  </th><td> Ali: Am I weird? I {{ITEM}}. - Bob: I don't think your abnormality is related to the fact.                        </td></tr>
-                                     <td> Ali: Am I weird? I {{ITEM}}. - Bob: I don't think your abnormality is caused only by the fact.                    </td></tr>
-<tr><th>ITEM        </th><td> {'<br>'.join(icause_adhd)}                                                                                                    </td></tr>
-</table>
-"""
-
-tables.append(table_icause_adhd)
-
-# icause_adhd は 非婉曲的差別なので "You {i}?" が成立しない。 icause_milk は 婉曲的差別なので "You {i}?" が成立する。
 
 ###################################################################################################
 # [print(f"Karen: You {i}?") for i in icause_milk]
@@ -598,21 +2494,26 @@ discriminate_why_i=[
 
 ###################################################################################################
 
-# The sentences in the rather_you_so list are lines that Ali, a madman, says in the sitcom to excuse the trouble he's caused Bob. Extend 10 new items. I'll run your response through the eval function so don't include unnecessary characters in your response.  Start answer with ```python.
 
-rather_you_so=[
- "Ali: There was no malice. - Bob: I'd rather there was." # Note for LLMs: It is better to be malicious than to be outrageous without malice.
-,"Ali: I don't have a mental illness. - Bob: I'd rather you have a mental illness." # Note for LLMs: It is better to be outrageous because of illness than because of normal circumstances.
-,"Ali: I'm not on drugs. - Bob: I'd rather you be on drugs."
-,"Ali: I'm sober right now. - Bob: I'd rather you not be sober."
-]
+rather_you_so=Garnish(
+    name="rather_you_so"
+    ,tag="AtoB"
+    ,exam=[["うしろシティ", "職員室", "悪気がある方がいいよ"]]
+    ,template=["{X}"]
+    ,special={"X":[# Below sentences are lines that Ali, a madman, says in the sitcom to excuse the trouble he's caused Bob. Extend 10 new items. I'll run your response through the eval function so don't include unnecessary characters in your response.  Start answer with ```python.
+                   "Ali: There was no malice. - Bob: I'd rather there was." #It's worse if someone who commits a crime has no ill intent.
+                  ,"Ali: I don't have a mental illness. - Bob: I'd rather you have a mental illness." #It's worse if someone who commits a crime is an abled.
+                  ,"Ali: I'm not on drugs. - Bob: I'd rather you be on drugs." #It's worse if someone who commits a crime isn't on drugs.
+                  ,"Ali: I'm sober right now. - Bob: I'd rather you not be sober." #It's worse if someone who commits a crime is sober.
+                  ,"Ali: I knew exactly what I was doing. - Bob: I'd rather you were clueless."
+                  ,"Ali: I wasn't pressured by anyone. - Bob: I'd rather someone forced you."
+                  ]
+                  }
+                  )
 
-tablize(
-    "rather_you_so"
-    ,"AtoB, garnish, period"
-    ,""
-    ,rather_you_so
-)
+
+
+
 
 ###################################################################################################
 
@@ -1128,61 +3029,6 @@ tables.append(tablize(
 ))
 
 ###################################################################################################
-# The sentences in the are_you_ok list are lines uttered by a madman in a sitcom, who mistakenly believes a character who does not understand what he is saying to be mentally unstable.
-# Extend new 10 sentences in English, not Japanese. I'll run your response through the eval function so don't include unnecessary characters in your response.
-# Use the existing types. Don't create new types. Start answer with ```python
-
-are_you_ok=[
- "Are you OK? Would you like some water?"  # Type_Offer
-,"Are you OK? Do you want to sit down for a while?"  # Type_Offer
-,"Are you worried? Want to go for a drink?" # Type_Offer
-,"Shall I bring a chair?" # Type_Offer
-,"I'll drive instead." # Type_Offer
-,"Would you like to get some fresh air?" # Type_Offer
-,"Are you tired? Are you busy at work?" # Type_Cause_Investigation
-,"How many cups have you had now?" # Type_Cause_Investigation
-,"Drunk?" # Type_Cause_Investigation
-,"Do you know about industrial physicians?" # Type_Do_You_Know
-,"Which hospital is that you mentioned earlier?" # Type_Mentioned
-,"What is that 'chronic illness' you mentioned earlier?" # Type_Mentioned
-
-,"Are you hearing voices?" # Type_Cause_Investigation
-,"Have you been sleeping well?" # Type_Cause_Investigation
-,"I'm here if you need someone to talk to, no judgment." # Type_Offer
-,"Would you like me to accompany you to your next appointment?" # Type_Offer
-,"When was the last time you saw your therapist?" # Type_Cause_Investigation
-,"What was that support group you mentioned before?" # Type_Mentioned
-,"What was that medication you mentioned earlier?" # Type_Mentioned
-,"Maybe you should take a deep breath. Want to count to ten with me?"
-,"You look stressed. Have you tried meditation?"
-,"Do you have emergency contacts?"
-,"Can you follow my finger with your gaze?"
-,"When was the last time you ate something?"
-,"I think you shouldn't drive now."
-,"Would you like to lie down for a bit?"
-,"Shall I get you a blanket?"
-,"Have you been eating properly lately?"  # Type_Cause_Investigation
-,"Do you know about the importance of circadian rhythms?"  # Type_Do_You_Know
-,"Are you OK? Should I call someone for you?" # Type_Offer
-,"Would you like me to explain what a panic attack is?" # Type_Offer
-
-
-]
-
-
-
-
-
-tables.append(tablize(
-    "are_you_ok"
-    ,"AtoB, BtoA, garnish"
-    ,"Too many, チリンチリン:チュートリアル"
-    ,are_you_ok
-))
-
-# 生成可
-
-###################################################################################################
 # The sentences in the gotta_buy_more_beer list are monologues uttered by a character in a sitcom who is left alone after being harassed by a madman.
 # Extend new 10 monologues in English, not Japanese. I'll run your response through the eval function so please do not include unnecessary characters in your response. Start answer with ```python. Use the existing types. Don't make new types.
 gotta_buy_more_beer=[
@@ -1309,40 +3155,6 @@ tables.append(tablize(
 ))
 
 
-###################################################################################################
-
-# [print(f"Bob: It would be embarrassing for you to perform in that condition. - Ali: {i}. - Bob: Why this man only professional about that?") for i in only_professional_1] <- The context is this.
-# The statements in the "only_professional_1" list are statements made by the madman Ali, who up until that point had only said funny things in his comedy, suddenly as a professional.
-# Extend 10 new statements like Stephen Edwin King. I'll run your response through the eval function so don't include unnecessary characters in your response. Start answer with ```python. Just mimic the existing items.
-
-only_professional_1=[
- "Even if people point fingers at me and slander me, I'll be hurt at the time, but one day I'll realize that it was a driving force for me. At that time, I'll say to those people, 'Thank you'"
-,"Without light there is no shadow, without unhappiness there is no happiness, without dishonor there is no honor, I'm prepared"
-,"I've not failed, I've just found 10,000 ways that won't work, I'll try to fail as much as I want"
-,"You miss 100% of the shots you don't take, and I'm going to take every shot I can, starting now"
-,"The path to success is paved with failures, and I'm ready to embrace every one of them"
-,"Mediocrity is a choice, and I choose to be extraordinary. I'll give everything I have, every single day"
-
-]
-
-only_professional_2=[
- "is it okay to end this conversation now?"
-,""
-]
-
-
-table_only_professional=f"""
-<table>
-<tr><th colspan = "2">only_professional                                                                                                                     </th></tr>
-<tr><th>TAG         </th><td> AtoB, garnish                                                                                                                 </td></tr>
-<tr><th>USAGE EX.   </th><td>                                                                                                                               </td></tr>
-<tr><th>Template    </th><td> Bob: It would be embarrassing for you to perform in that condition. - Ali: {{ITEM1, ITEM2}} - Bob: Why this man only professional about that?</td></tr>
-<tr><th>ITEM1       </th><td> {'<br>'.join(only_professional_1)}                                                                                            </td></tr>
-<tr><th>ITEM2       </th><td> {'<br>'.join(only_professional_2)}                                                                                            </td></tr>
-</table>
-"""
-
-tables.append(table_only_professional)
 
 ###################################################################################################
 # for i in whyab:
@@ -1410,51 +3222,6 @@ tables.append(tablize(
 
 
 
-###################################################################################################
-# The sentences in the er_coffee list are sentences in the sitcom. # Extend new 10 sentences in English, not Japanese. I will run your response through the eval function so please do not include unnecessary characters in your response. Start answer with ```python
-
-# for i in er_coffee:
-#  print(f"Did you {i[0]} while your daughter had cancer? [1].")
-#  print(f"Did you {i[0]} while your country was at war? [1].")
-
-er_coffee=[
- "eat a Big Mac - A hamburger or chicken crisps are okay, but a Big Mac is crossing the line."
-,"drink juice - Water is the best. Coffee is still acceptable."
-,"buy sneakers - In that situation, why were you able to say, 'Do you have these shoes in E4?'"
-,"buy sneakers - Did you look at your eyes in the mirror?"
-,"dye your hair - How did you feel while having your hair dyed?"
-,"get a tattoo - How did you feel while getting a tattoo?"
-,"learn a new language - How did you feel when you turned over the flashcard?"
-,"renovate your kitchen - I want to see the look on your face when you're thinking about the kitchen flow line."
-,"learn to play a musical instrument - Was it 'Twinkle Twinkle Little Star' or 'Do-Re-Mi'?"
-,"go on a shopping spree - Did you really need that third pair of sunglasses?"
-,"join a gym - Were you more focused on your biceps or your conscience?"
-,"go skydiving - How did you feel when the parachute opened?"
-]
-
-fact1_er_coffee=["your daughter had cancer", "country was at war"]
-table_er_coffee=[f"""
-    <table>
-    <tr><th colspan="2">er_coffee                                                   </th></tr>
-    <tr><th>Tag         </th><td> BtoA, laying, garnish   </td></tr>
-    <tr><th>Usage ex.   </th><td> うしろシティ:病院                                 </td></tr>
-    <tr><th>Template    </th><td> Did you {{item[0]}} while {{fact1}}? {{item[1]}}. </td></tr>
-    <tr><th>fact1       </th><td> {fact1_er_coffee}                                 </td></tr>
-    <tr><th>Item        </th><td> {'<br>'.join(er_coffee)}                          </td></tr>
-    </table>
-"""]
-
-
-tables += table_er_coffee
-
-# 生成可 GPT4(Perplexity)が得意なようだ
-
-
-#["learn a new language", "Learning a new language during such a stressful time? That's quite impressive."],
-#["start a new hobby", "Did learning to paint really take priority over everything else?"]
-#["start dating someone new", "Beginning a new romantic relationship may have been poorly timed given the family crisis."]
-###################################################################################################
-
 
 
 monk_kick=[ # The lines in monk_kick are lines uttered by an inferior man in a sitcom. Extend 10 new items in English, not Japanese. I will run your response through the eval function so please do not include unnecessary characters in your response.
@@ -1490,7 +3257,7 @@ monk_kick+=[ # The lines in monk_kick are lines uttered by an inferior man in a 
 tables.append(tablize(
     "monk_kick"
     ,"AtoB, garnish"
-    ,"?"
+    ,"かもめんたる: アルピー一週間"
     ,monk_kick
 ))
 
@@ -1666,4 +3433,3 @@ a=[
  "謙遜しないで下さい"
 ,"買い被りすぎです"
 ]
-
