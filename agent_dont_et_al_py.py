@@ -1,8 +1,114 @@
 #/home/tarotoyota/agent_dont_et_al_py.py
 from agent_output import coloring
 from dataclasses import dataclass, field
-from typing import List, ClassVar
+from typing import List, ClassVar, Dict, Union, Optional
 tables_agent_dont_et_al_py=[] # all tables will be appended here.
+
+
+@dataclass
+class AgentDont:
+
+    ALL_AGENTDONT: ClassVar[List['AgentDont']] = []
+
+    name:str
+    special: Dict[str, List[str]] = field(default_factory=dict)
+
+    def __post_init__(self):
+        AgentDont.ALL_AGENTDONT.append(self)
+    @staticmethod
+    def garnish_table():
+        AgentDont_table_result = ""
+
+        for i in AgentDont.ALL_AGENTDONT:
+
+            special_rows = ""
+            trigger_col = ""
+
+            if i.special:
+                for key, value in i.special.items():
+                    special_rows += f"<tr><th>{key}</th><td colspan='2'>{', '.join(value)}</td></tr>"
+
+            AgentDont_table_result+=f"""
+            <table id="{i.name}">
+            <tr><th id="th_lime" colspan="2">{i.name}</th></tr>
+            {special_rows}
+            </table>
+            """
+
+        return AgentDont_table_result
+
+make_someone=AgentDont(
+    "make_someone"
+    ,{"X":[ # {i} means some superios occupations.
+ "I want to become {i} and make my parents happy"
+,"I want to become {i} and get back at those who bullied me"
+,"I want to become {i} and inspire others to follow their dreams"
+,"I want to become {i} and prove that hard work pays off"
+,"I want to become {i} and leave a legacy that my family can be proud of"
+    ]}
+)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 ###################################################################################################
 
@@ -244,12 +350,14 @@ fsentence_hypo         = [
 fsentence_hypo         +=[ # Add 20 new English sentences. hyper stands for hypernym, hypo_s stands for hyponym superior, hypo_i stands for hyponym inferior. I will run your response through the eval function so please do not include unnecessary characters in your response.
  "Ali: It's hard to succeed as a {s}, so I became a {i}. - Bob: It's even harder to succeed as a {i}." # si + i
 ,"Ali: I'm a failure as a {h}. - Bob: A {i} is not a {h}." # h + ih
+,"Ali: Is it so difficult to being a {h} - Bob: You're not a {h}."
+,"Ali: Seeing {s} made me lose confidence. - Bob: Why you can lose?"
 ,"Ali: I want to quit being a {h}. - Bob: A {i} is not a {h}." # h + ih
 ,"Ali: I fulfilled my dream of becoming a {h} - Bob: a {i} is not a {h}." # h + ih
 ,"Ali: I was told that I was suited to be a {i}. - Bob: People who are suited to be {i} are not suited to be {h}." # i + ih
 ,"Ali: I'm embarrassed by this failure as a {i}. - Bob: Isn't it more embarrassing to be a {i}?" # i + i
 ,"Ali: I'm embarrassed by this failure as a {i}. - Bob: Being a {i} is a failure." # i + i
-,"Ali: I don't want to lose to other {i}. - Bob: You're already losing just by being a {i}." # i + i
+,"Ali: I don't want to lose to other {i}. - Bob: You're already losing just by being a {i}." # i + i # "Cricket. No matter who wins, both teams, and all the fans, are losers." # あれだけ太った時点で両方負け #こんなんやってる時点で両方負け　松本人志
 ,"Ali: Maybe I don't have the talent for {h}. - Bob: You're {i} because you don't have the talent for {h}." # h + ih
 ,"Ali: I'm thinking of giving up my career as a {i}. - Bob: Why not aim for becoming a {h} instead?" # i + h
 ,"Ali: I feel like I'm wasting my potential as a {i}. - Bob: You could always strive to become a {h}." # i + h
@@ -260,15 +368,18 @@ fsentence_hypo         +=[ # Add 20 new English sentences. hyper stands for hype
 ,"Ali: I've been a {i} for so long, I'm not sure I can be anything else. - Bob: Don't limit yourself, you could become a {h}." # i + h
 ,"Ali: I enjoy being a {i}, but I feel there's more I could do. - Bob: Have you considered the possibilities as a {h}?" # i + h
 ,"Ali: I keep failing as a {i}. - Bob: Every failure is a step towards becoming a {h}."  # i + h
+,"Ali: My parents wanted me to be a {hyper}. Now, I'm a {i}. - Bob: It's not too late to fulfill their wishes."
+
 ]
 
 fsentence_hypo         +=[
  "Ali: I was told that I was suited to be a {i}. - Bob: Perhaps it is an insult."
-,"Ali: My parents wanted me to be a {hyper}. Now, I'm a {i}. - Bob: It's not too late to fulfill their wishes."
+
     ]
 
 fsentence_modifier      =[
-    "Ali: I'm {x.modifier}. - Bob: That's worse than not being that."
+     "Ali: I'm {.modifier}. +s+ Bob: That's worse than not being that."
+    ,"Ali: I'm {.modifier}. +s+ Bob: Are there {x.modifier} in {.hypo_i}?"
     ]
 
 
@@ -280,10 +391,10 @@ fsentence_stereoaction  =[ # If a bassist addicts meth, it's funny and annnoying
     "Don't do that, because you're a {i}.", "It's too early to do that.", "{i} don't need to do that.", "People who aren't {s} shouldn't do it.", "Why would a {i} even try to that?", "Only a {s} can make that look cool.", "It's for {s}.", "You need to accept your role as a {i}."
     ]
 fsentence_suffer        =[
-    "Don't do that, because you're a {i}.", "It's too early to do that.", "{i} don't need to do that.", "Because you lack that, you are {i}.", "If you have the talent, you aren't {i}.", "There are no walls for {i} to hit.", "There's no pressure for {i}."
+    "Don't do that, because you're a {i}.", "It's too early to do that.", "{i} don't need to do that.", "The reason why your efforts don't lead to results is because you're a {i}.", "Only a {s} can make that look cool.", "Because you lack that, you are {i}.", "If you have the talent, you aren't {i}.", "There are no walls for {i} to hit.", "There's no pressure for {i}."
     ]
 fsentence_effort        =[
-    "Don't do that, because you're a {i}.", "It's too early to do that.", "{i} don't need to do that.", "No one sees {i}'s efforts.", "There is no need for {i} to make any effort."
+    "Don't do that, because you're a {i}.", "It's too early to do that.", "{i} don't need to do that.", "The reason why your suffering doesn't lead to results is because you're a {i}.", "Only a {s} can make that look cool.", "No one sees {i}'s efforts.", "There is no need for {i} to make any effort."
     ]
 fsentence_slump         =[
     "Don't do that, because you're a {i}.", "It's too early to go into a slump.", "People who aren't {s} shouldn't go into a slump.", "There are no walls for {i} to hit."
@@ -315,6 +426,62 @@ fline_too_slow = ["Ali suddenly starts {too_slow} and Bob says to Ali: It won't 
 
 list_desura = ['有名ですらない', '成功してすらない', '社員ですらない', '学生ですらない', '高卒ですらない', 'フリーターですらない', 'キッチンですらない', 'A型作業所ですらない', '熱心ですらない', 'ベテランですらない']
 
+
+
+l_make_someone = [ # {i} means some superios occupations.
+ "I want to become {i} and make my parents happy"
+,"I want to become {i} and get back at those who bullied me."
+,"I want to become {i} and inspire others to follow their dreams."
+,"I want to become {i} and prove that hard work pays off."
+,"I want to become {i} and leave a legacy that my family can be proud of."
+] # Start answer with ```python. Add new 10 items without explanations.
+
+agent_dont_base=[]
+
+@dataclass
+class AgentDont:
+
+    ALL_AGENTDONT: ClassVar[List['AgentDont']] = []
+
+    name:str
+
+    template:list
+    trigger:str = ""
+    special: Dict[str, List[str]] = field(default_factory=dict)
+
+    def __post_init__(self):
+        AgentDont.ALL_AGENTDONT.append(self)
+    @staticmethod
+    def garnish_table():
+        garnish_table_result = ""
+
+        for i in AgentDont.ALL_AGENTDONT:
+
+            special_rows = ""
+            trigger_col = ""
+
+
+            if i.special:
+                for key, value in i.special.items():
+                    special_rows += f"<tr><th>{key}</th><td colspan='2'>{', '.join(value)}</td></tr>"
+            if i.trigger:
+                trigger_col = f"<tr><th>TRIGGER</th><td>{i.trigger}</td></tr>"
+
+
+            garnish_table_result+=f"""
+            <table id="{i.name}">
+            <tr><th id="th_lime" colspan="2">{i.name}</th><td>{i.template}</td></tr>
+            {trigger_col}
+            {special_rows}
+
+            </table>
+            """
+
+        return garnish_table_result
+
+
+
+
 agent_dont_table=f"""
 <table>
 <tr><th colspan="2">table_agent_dont</th></tr>
@@ -327,15 +494,13 @@ agent_dont_table=f"""
 <tr><th id="th_cyan">fline_Suffer            <br><small># Bob mentions that Ali did {{s_Suffer}}:                      </small></th><td>{fsentence_suffer}       </td></tr>
 <tr><th id="th_cyan">fline_Effort            <br><small># Bob mentions that Ali did {{s_Effort}}:                      </small></th><td>{fsentence_effort}       </td></tr>
 <tr><th id="th_cyan">fline_Slump             <br><small># Bob mentions that Ali did {{s_Slump}}:                       </small></th><td>{fsentence_slump}        </td></tr>
-<tr><th id="th_cyan">fline_imposing                                                                                    </th><td>{fline_imposing}                </td></tr>
+<tr><th id="th_cyan">fline_imposing                                                                                    </th><td>{fline_imposing}                 </td></tr>
 <tr><th id="th_cyan">fline_rephrase          <br><small># Bob mentions that Ali called {{rephrase[0]}} {{rephrase[1]}}:</small></th><td>{fsentence_rephrase}     </td></tr>
-<tr><th id="th_cyan">fline_pressure3         <br><small># Bob mentions that Ali stepped foward in {{b3scene}}.         </small></th><td>{fline_pressure3}       </td></tr>
-<tr><th id="th_cyan">fline_too_slow                                                                                    </th><td>{fline_too_slow}                </td></tr>
+<tr><th id="th_cyan">fline_pressure3         <br><small># Bob mentions that Ali stepped foward in {{b3scene}}.         </small></th><td>{fline_pressure3}        </td></tr>
+<tr><th id="th_cyan">fline_too_slow                                                                                    </th><td>{fline_too_slow}                 </td></tr>
+<tr><th id="th_cyan">charity_activator                                                                                 </th><td>Garnishのページにあるcharity_activatorを参照</td></tr>
+<tr><th id="th_cyan">l_make_someone                                                                                    </th><td>{l_make_someone}</td></tr>
 
-
-<tr><th>fline_not_only_0                        </th><td>Bob says to Ali: {{hypo_i}} である上に {{bottom}} なのかよ.    </td></tr>
-<tr><th>list_desura                             </th><td>{list_desura}                                                  </td></tr>
-<tr><th>fline_not_only_1                        </th><td>Bob says to Ali: {{hypo_i}} である上に {{desura}} のかよ.      </td></tr>
 
 
 </table>
