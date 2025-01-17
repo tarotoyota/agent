@@ -1,0 +1,772 @@
+
+def gallower(): # You can perform this task manually or have an LLM do it for you, but don't use Google Gemini because he is too stupid for this task.
+
+
+    opening = '''
+    LOCATION: A hospital room
+    Ali: A doctor
+    Bob: An inpatient
+    EVENT: Bob has no motivation to get treatment, and Ali wants to do something about it.
+    '''
+
+
+    a2b_encourage               ='' # if Ali encourages Bob, it's natural.
+    b2a_encourage               ='' # if Bob encourages Ali, it's natural.
+    a2b_criticize               ='' # if Ali criticizes Bob, it's natural.
+    b2a_criticize               ='' # if Bob criticizes Ali, it's natural.
+    b_negative_emotion          ='' # if Bob feels sadness, fear, surprise or anxiety, it's natural.
+    a_complaint                 ='' # if Ali complains about the people around him, it's natural.
+    a2b_how_he_skilled          ='' # if Ali insists to Bob that he has enough skills, it's natural.
+    a_long_term                 ='' # if Ali has been in that condition or that job for a long time, it's natural.
+    a_has_met_b_many_times      ='' # if Ali has met Bob many times, it's natural.
+
+    # TASK1: If it is natural for Ali or Bob to perform the above action after the opening, assign 'y' to that variable. If it is forceful, leave the value of the variable blank. Start answer with ```python. Please include explanations.
+    # RULE1: I'm not asking whether there is any indication or mention within the opening. All I'm asking is "Is it natural for that to happen after the opening?" and "Is it natural for that to be so after the opening?"
+
+
+    ####################    ####################    ####################    ####################
+
+
+
+
+    # a2b_encourage: Ali encouraging Bob to get treatment.
+    a2b_encourage = 'y'  # It is natural for Ali to encourage Bob, as he is a doctor wanting to motivate his patient.
+
+    # b2a_encourage: Bob encouraging Ali in his role as a doctor.
+    b2a_encourage = ''  # It is less common for a patient to encourage a doctor, so this feels less natural.
+
+    # a2b_criticize: Ali criticizing Bob for his lack of motivation.
+    a2b_criticize = 'y'  # It is natural for Ali to express frustration or criticism towards Bob's lack of motivation, as he wants to help.
+
+    # b2a_criticize: Bob criticizing Ali's approach or treatment.
+    b2a_criticize = ''  # While possible, it is not the most natural response given the context of a patient needing help.
+
+    # b_negative_emotion: Bob feeling sadness, fear, surprise, or anxiety.
+    b_negative_emotion = 'y'  # It is natural for Bob to experience negative emotions given his situation as an inpatient lacking motivation.
+
+    # a_complaint: Ali complaining about the people around him.
+    a_complaint = ''  # This does not seem directly relevant to the situation at hand, making it less natural.
+
+    # a2b_how_he_skilled: Ali insisting he has enough skills.
+    a2b_how_he_skilled = 'y'  # It is natural for Ali to reassure Bob of his competence as a doctor in order to build trust.
+
+    # a_long_term: Ali having been in that condition or job for a long time.
+    a_long_term = 'y'  # If Ali has been working as a doctor for a long time, this would be natural and relevant to his experience with patients.
+
+    # a_has_met_b_many_times: Ali having met Bob many times before.
+    a_has_met_b_many_times = 'y'  # If they have an established relationship, it is natural for Ali to have met Bob multiple times during his treatment.
+
+
+
+
+    ####################    ####################    ####################    ####################
+    allowed_br=[]
+
+    pairs_br = [
+     (a2b_encourage               , ["SadPast"])
+    ,(b2a_encourage               , [])
+    ,(a2b_criticize               , ["HIGH_PRIDE"])
+    ,(b2a_criticize               , ["HIGH_PRIDE", "SadPast", "different_epithet", "different_downfall_personality", "monk_kick"])
+    ,(b_negative_emotion          , ["agree_simple"])
+    ,(a_complaint                 , ["SadPast", "different_downfall_community", "monk_kick"])
+    ,(a2b_how_he_skilled          , ["HIGH_PRIDE"])
+    ,(a_long_term                 , ["FREQUENTLY", "RARELY"])
+    ,(a_has_met_b_many_times      , ["FREQUENTLY", "RARELY"])
+    ]
+
+    for var, allows in pairs_br:
+        if var:
+            allowed_br.extend(allows)
+    print(f"BR: {allowed_br}")
+
+
+
+
+    opening = '''
+    LOCATION: A backroom
+    Ali: An athlete
+    Bob: An event staff
+    EVENT: Ali complains to Bob that he is being paid too little for his autograph session at the venue.
+
+    REVEAL: Ali is just an unfamous pool player (strong only at local tournaments). Bob is angry at Ali's attitude.
+    '''
+
+
+
+    married                   = '' # Is Ali so crazy or stupid that he can't get married?
+    graduated                 = '' # Is Ali so crazy or stupid that he can't graduate college?
+    friend                    = '' # Is Ali so crazy or stupid that he can't make friends?
+    insane_train              = '' # Is Ali so crazy or stupid that he can't change trains?
+
+    # TASK1: If yes, assign 'y' to that variable. If no, leave the value of the variable blank. Start answer with ```python. Please include explanations.
+    # We're not talking about any evidence or indication.
+
+    ####################    ####################    ####################    ####################
+
+    # Assigning values based on the character Ali's actions and characteristics.
+
+    # Is Ali so crazy or stupid that he can't get married?
+    married = 'y'  # Ali's unethical behavior and lack of moral judgment suggest he may struggle with personal relationships.
+
+    # Is Ali so crazy or stupid that he can't graduate college?
+    graduated = 'y'  # The portrayal of Ali as a deceptive character implies a potential failure to meet academic standards.
+
+    # Is Ali so crazy or stupid that he can't make friends?
+    friend = 'y'  # His manipulative nature likely alienates him from forming genuine friendships.
+
+    # Is Ali so crazy or stupid that he can't change trains?
+    insane_train = ''  # This question is less relevant to his character's moral and ethical failures; thus, it remains blank.
+
+
+
+    ####################    ####################    ####################    ####################
+
+
+    allowed_ar = []
+
+    pairs_ar = [
+     (married                   , ["nanamagari2(be married)", "SAD_PAST(be married)"])
+    ,(graduated                 , ["nanamagari2(be graduated)", "SAD_PAST(be graduated)"])
+    ,(friend                    , ["nanamagari2(have friends)", "SAD_PAST(have friends)"])
+    ,(insane_train              , ["PUMPKIN", "SANE"])
+    ]
+    for var, allows in pairs_ar:
+        if var:
+            allowed_ar.extend(allows)
+    print(f"AR: {allowed_ar}")
+
+
+
+gallower()
+
+#########################################################################################
+
+
+
+    pairs = [
+        (a, ["1", "2"]),
+        (b, ["3", "4"]),
+        (c, ["5", "6"])
+    ]
+
+    # for文で各ペアを処理
+    for var, values in pairs:
+        if var:
+            x.extend(values)
+
+
+    # 下記変数は"if Ali ~, it's natural."という形式のコメントを添えると答えにくい。
+    a_celebrity_or_wannabe      ='' # Ali is a wannabe celebrity or a celebrity.
+    a_lowly_rated               ='' # Ali is lowly rated.
+
+
+
+    opening = '''
+    LOCATION: A hospital room
+    Ali: A child cancer patient
+    Bob: A baseball player
+    EVENT: Ali sent Bob a letter, saying that he will have surgery if Ali hits a home run. Bob visits Ali in the hospital.
+
+    REVEAL: Ali is just a pubic lice sufferer. Bob gets angry at Ali.
+    '''
+
+    opening = '''
+    LOCATION: A hospital room
+    Ali: A doctor
+    Bob: An inpatient
+    EVENT: Bob has no motivation to get treatment, and Ali wants to do something about it.
+
+    REVEAL: Ali is a dentist, but under the guise of a medical procedure, he performs internal exams on his patients and gets them to submit urine samples.
+    '''
+
+    opening = '''
+    LOCATION: A backroom
+    Ali: An athlete
+    Bob: An event staff
+    EVENT: Ali complains to Bob that he is being paid too little for his autograph session at the venue.
+
+    REVEAL: Ali is just a strong billiards player in local tournaments. Bob is angry at Ali's attitude.
+    '''
+
+
+
+
+
+
+
+
+
+
+
+def prompt_printer():
+
+  opening = '''
+  LOCATION: A hospital room
+  Ali: A child cancer patient
+  Bob: A baseball player
+  EVENT: Ali sent Bob a letter, saying that he will have surgery if Ali hits a home run. Bob visits Ali in the hospital.
+  '''
+
+
+  a_mention_sad_past          ='' #Ali mentions his sad past.
+  a_mention_past_praise       ='' #Ali mentions the accolades he has received in the past.
+  a_mention_future_dream      ='' #Ali mentions his dreams for the future.
+  a_poor_treatment            ='' #Ali mentions his poor treatment he receives.
+  a_good_treatment            ='' #Ali mentions his good treatment he receives.
+  a_high_rated                ='' #Ali says like 'I'm skilled' or 'I'm highly regarded.'
+  a_low_rated                 ='' #Ali says like 'I'm unskilled' or 'I'm lowly regarded.'
+  both_in_competition         ='' #Ali and Bob are in competition.
+  a_one_ups                   ='' #Ali one-ups someone.
+  a_cuts_round                ='' #Ali cuts round his skill.
+  a2b_brings_negative_emotion ='' #Ali brings sadness, fear, surprise or anxiety to Bob.
+  a_celebrity_or_wannabe      ='' #Ali is a wannabe celebrity or a celebrity.
+
+  a_scolds_b                  ='' #Ali scolds Bob.
+  a_encourages_b              ='' #Ali encourages Bob.
+  b_scolds_a                  ='' #Bob scolds Ali.
+  b_encourages_a              ='' #Bob encourages Ali.
+
+  a_harmful_action            ='' #Ali tries to do some harmful action or Ali's life is put at risk.
+  a_mention_weaks             ='' #Ali mentions people with some kind of handicap.
+  a_desperation               ='' #Ali makes claims like he's not afraid of death and that he's lost his emotions.
+  a_community_problem         ='' #Ali mentions the problems in his community.
+
+
+  a_has_met_b_many_times      ='' #Ali has met Bob many times.
+  a_long_term_work            ='' #Ali has been in his current job for over 10 years.
+
+  # TASK1: If it is natural for Ali or Bob to perform the above action after the opening, assign 'y' to that variable. If it is forceful, leave the value of the variable blank. Start answer with ```python. Please include explanations.
+  # RULE1: I'm not asking whether there is any indication or mention within the opening. All I'm asking is "Is it natural for that to happen after the opening?"
+
+  # Please double check that it is an inference about what happens "After the opening."
+  # Please double check that you didn't violate RULE1.
+
+
+
+
+  a_mention_sad_past          ='' #Ali mentions his sad past.
+  a_mention_past_praise       ='' #Ali mentions the accolades he has received in the past.
+  a_mention_future_dream      ='' #Ali mentions his dreams for the future.
+  a_poor_treatment            ='' #Ali mentions his poor treatment he receives.
+  a_good_treatment            ='' #Ali mentions his good treatment he receives.
+  a_high_rated                ='' #Ali says like 'I'm skilled' or 'I'm highly regarded.'
+  a_low_rated                 ='' #Ali says like 'I'm unskilled' or 'I'm lowly regarded.'
+  both_in_competition         ='' #Ali and Bob are in competition.
+  a_one_ups                   ='' #Ali one-ups someone.
+  a_cuts_round                ='' #Ali cuts round his skill.
+  a2b_brings_negative_emotion ='' #Ali brings sadness, fear, surprise or anxiety to Bob.
+  a_celebrity_or_wannabe      ='' #Ali is a wannabe celebrity or a celebrity.
+
+  a_scolds_b                  ='' #Ali scolds Bob.
+  a_encourages_b              ='' #Ali encourages Bob.
+  b_scolds_a                  ='' #Bob scolds Ali.
+  b_encourages_a              ='' #Bob encourages Ali.
+
+  a_harmful_action            ='' #Ali tries to do some harmful action or Ali's life is put at risk.
+  a_mention_weaks             ='' #Ali mentions people with some kind of handicap.
+  a_desperation               ='' #Ali makes claims like he's not afraid of death and that he's lost his emotions.
+  a_community_problem         ='' #Ali mentions the problems in his community.
+
+
+  a_has_met_b_many_times      ='' #Ali has met Bob many times.
+  a_long_term_work            ='' #Ali has been in his current job for over 10 years.
+
+  # TASK1: If it is natural for Ali or Bob to perform the above action after the opening, assign 'y' to that variable. If it is forceful, leave the value of the variable blank. Start answer with ```python. Please include explanations.
+  # RULE1: I'm not asking whether there is any indication or mention within the opening. All I'm asking is "Is it natural for that to happen after the opening?"
+
+  # Please double check that it is an inference about what happens "After the opening."
+  # Please double check that you didn't violate RULE1.
+
+
+
+  opening = '''
+  LOCATION: A hospital room
+  Ali: A child cancer patient
+  Bob: A baseball player
+  EVENT: Ali sent Bob a letter, saying that he will have surgery if Ali hits a home run. Bob visits Ali in the hospital.
+  '''
+
+  b2a_criticize                     = '' # Bob criticizes Ali out of confusion, irritation, impatience, anger, etc.
+  b2a_criticize_nouns               = [] # if b2a_criticize == 'y', What are the critical nouns that Bob would give to Ali?
+  b2a_praise                        = '' # Bob praises Ali.
+  b2a_praise_nouns                  = [] # if b2a_praise    == 'y', What are the praising nouns that Bob would give to Ali?
+  a2b_brings_negative_emotion       = '' # Ali brings sadness, fear, surprise or anxiety to Bob.
+  a2b_brings_negative_emotion_nouns = [] # if b2a_brings_negative_emotion == 'y', What are the emotions that Bob would feel?
+
+  # If it is natural for Ali or Bob to perform the above action after the opening, assign 'y' to that variable. If it is forceful, leave the value of the variable blank. Start answer with ```python
+
+  # Please double check that it is an inference about what happens "After the opening."
+
+
+  #################################################################################################################
+  a_mention_sad_past = 'y'  # Ali is a child cancer patient, likely to mention his condition
+  a_mention_future_dream = 'y'  # Ali may express hope for recovery or playing baseball
+  a_good_treatment = 'y'  # Bob visiting Ali in the hospital is a form of good treatment
+  b_encourages_a = 'y'  # Bob, as a baseball player, is likely to encourage Ali
+  a_harmful_action = 'y'  # Ali's upcoming surgery puts his life at risk
+  b2a_criticize = ''  # It is unlikely for Bob to criticize Ali given the context of a supportive visit.
+  b2a_praise = 'y'  # Bob is likely to praise Ali for his courage and determination.
+  b2a_praise_nouns = ['courage', 'strength', 'determination']  # These are positive attributes Bob might mention.
+  a2b_brings_negative_emotion = 'y'  # Ali's situation may evoke sadness or anxiety in Bob.
+  a2b_brings_negative_emotion_nouns = ['sadness', 'fear', 'anxiety']  # These are the emotions Bob might feel due to Ali's condition.
+
+
+  #################################################################################################################
+
+
+  allowed_garnish=[]
+
+  z_a_mention_past_praise = ["mistake_fear_for_support", "mistake_victimization_for_praise", "different_praise", "agree_make_smile", "agree_different_levels", "agree_simple"]
+
+  if a_mention_sad_past:
+      allowed_garnish.append("SAD_PAST")
+  if a_mention_past_praise:
+      allowed_garnish.extend(z_a_mention_past_praise)  # Use extend to add multiple items at once
+  if a_mention_future_dream:
+      pass
+  if a_poor_treatment:
+      allowed_garnish.append("agree_only")
+  if a_good_treatment:
+      allowed_garnish.extend(z_a_mention_past_praise)
+  if a_high_rated:
+      allowed_garnish.extend(z_a_mention_past_praise)
+  if a_low_rated:
+      allowed_garnish.append("agree_only")
+  if both_in_competition:
+      allowed_garnish.extend(["agree_one_sided", "agree_simple", "agree_different_levels", "agree_found_it_easy", "there_is_the_knack"])
+  if a_one_ups:
+      allowed_garnish.extend(["agree_different_levels", "agree_found_it_easy", "agree_simple", "there_is_the_knack"])
+  if a_cuts_round:
+      allowed_garnish.extend(["agree_different_levels", "agree_found_it_easy", "agree_simple", "there_is_the_knack"])
+  if a_celebrity_or_wannabe:
+      allowed_garnish.extend(["LOWBROW", "UNFAMOUS"])
+
+
+  # scolds, encourages
+  if a_scolds_b:
+      allowed_garnish.extend(["be_serious"])
+  if a_encourages_b:
+      allowed_garnish.extend(["be_serious"])
+  if b_scolds_a:
+      allowed_garnish.extend(["pumpkin_self_defense", "monk_kick", "different_downfall_personality", "different_epithet"])
+  if b_encourages_a:
+      allowed_garnish.extend(["pumpkin_self_defense", "monk_kick", "different_downfall_personality", "different_epithet"])
+
+
+
+  if a_harmful_action:
+      allowed_garnish.append("execute_strange_timing")
+  if a_mention_weaks:
+      allowed_garnish.append("i_dont_know_how_them_feel")
+  if a_desperation:
+      allowed_garnish.extend(["execute_strange_timing", "different_epithet"])
+  if a_community_problem:
+      allowed_garnish.append("different_downfall_community")
+
+
+  # FREQUENTLY, RARELY
+  if a_has_met_b_many_times:
+      allowed_garnish.append("saraba_painter", "FREQUENTLY", "RARELY")
+  if a_long_term_work:
+      allowed_garnish.append("FREQUENTLY", "RARELY")
+
+  if b2a_criticize and b2a_criticize_nouns:
+    allowed_garnish.append(f"different_epithet({b2a_criticize_nouns})")
+  if b2a_praise and b2a_praise_nouns:
+    allowed_garnish.append(f"different_praise({b2a_praise_nouns})")
+  if a2b_brings_negative_emotion:
+      allowed_garnish.append(f"agree_simple({a2b_brings_negative_emotion_nouns})")
+
+
+  allowed_garnish_unique = list(set(allowed_garnish))
+  for item in allowed_garnish_unique:
+      print(item)
+
+
+
+
+
+
+prompt_printer()
+
+
+
+
+
+  #################################################################################################################
+  #################################################################################################################
+  #################################################################################################################
+
+
+"""
+  opening = '''
+  LOCATION: A hospital room
+  Ali: A child cancer patient
+  Bob: A baseball player
+  EVENT: Ali sent Bob a letter, saying that he will have surgery if Ali hits a home run. Bob visits Ali in the hospital.
+  '''
+"""
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+def gallower_br(): # Don't use google gemini for this.
+
+    plot_first_scene = "Actor Ali threatens director Bob that he will commit suicide if he doesn't cast him in the lead role."
+
+    # Start answer with ```python
+    # Let's think together about how this plot can/can't be developed after plot_first_scene.
+    # Please mark them with "yes" or blank(this means no) in the double quotes below. With short explanations.
+    # Reply with only the valuables and comments.
+
+    ali_skill       = "" # Is it natural for Ali to explain and brag about his skills and track records?
+    competition     = "" # Ali and Bob are in a same team in some competiton?
+    have_met_many   = "" # Do Ali and Bob know each other to some extent?
+    aint_you_ashamed= "" # Can Ali and Bob get into an argument and conflict because of a difference of opinion?
+    insulting       = "" # If aint_you_ashamde == "yes", write the insulting nouns that Bob would say to Ali, in this variable.
+    celebrity       = "" # Are people in the same profession as Ali commonly invited to media and events?
+    same_job        = "" # Do Ali and Bob have the same job?
+    ali_rich        = "" # In a plot like this, does Ali seem richer than average?
+    ali_noble       = "" # In a plot like this, does Ali seem uninformed about pop culture and unlikely to watch MTV?
+    sad_past        = "" # Can Ali mention his sad past, such as poverty and divorce, with anger or sadness naturally?
+    bad_mood        = "" # Would it be natural for Ali to say, "The mood in our team has been gloomy lately," or, "We have a high turnover rate"?
+
+    ### Paste the answer below
+
+
+
+    ### Paste the answer above
+    allowed=[]
+
+    if ali_skill:
+        allowed.extend(["agree_found_it_easy", "agree_only", "different_fear_cheer", "different_fanmian_teacher", "agent_dont"])
+    if competition:
+        allowed.extend(["agree_one_sided"])
+    if have_met_many:
+        allowed.extend(["saraba_painter"])
+    if aint_you_ashamed:
+        allowed.extend(["pumpkin_self_defense"])
+    if celebrity:
+        allowed.extend(["lowbrow_place", "petty_event1", "petty_event2", "petty_news"])
+    if insulting:
+        allowed.extend([f"different_genre({insulting})"])
+    if same_job and ali_skill:
+        allowed.extend(["agree_different_levels", "there_is_the_knack", "be_serious"])
+    if ali_rich:
+        allowed.extend(["lowbrow_place"])
+    if ali_noble:
+        allowed.extend(["lowbrow_place"])
+    if sad_past:
+        allowed.extend(["SadPast"])
+#    if disable:
+#        allowed.extend(["i_dont_know_how_them_feel"])
+    if bad_mood:
+        allowed.extend(["different_cause_you"])
+
+
+
+    print(allowed)
+
+
+"""
+    plot_first_scene = "Actor Ali threatens director Bob that he will commit suicide if he doesn't cast him in the lead role."
+
+ali_skill       = "yes"  # It's natural for Ali to explain and brag about his skills, especially in a competitive environment where he feels he deserves the lead role.
+competition     = "no"   # There is no indication that Ali and Bob are on the same team; rather, this scenario suggests a conflict over casting.
+have_met_many   = "yes"  # Given the context of the threat, it's likely that Ali and Bob have met before, possibly during auditions or previous projects.
+aint_you_ashamed= "yes"  # An argument can arise from their differing opinions, particularly if Bob feels pressured by Ali's threat.
+insulting       = "coward, talentless hack, pathetic"  # If they argue, Bob might resort to insults reflecting his frustration with Ali's behavior.
+celebrity       = "yes"  # Actors like Ali are often invited to media events and industry gatherings, which creates additional pressure and visibility for both parties.
+"""
+
+
+"""
+    plot_first_scene = "Ali is an unsuccessful comedian whose controversial jokes, ambition and arrogance put him at odds with his manager and agency."
+
+ali_skill       = "yes"  # It's natural for Ali to brag about his skills, especially given his ambition and desire to succeed in a competitive field.
+competition     = "no"   # Ali is not in competition with Bob; rather, the conflict arises from their professional relationship as manager and comedian.
+have_met_many   = "yes"  # Ali and Bob likely know each other well due to their working relationship, which can lead to tension.
+aint_you_ashamed= "yes"  # An argument is plausible due to their differing views on Ali's controversial jokes and career direction.
+insulting       = "failure, joke thief, delusional"  # Bob might insult Ali by calling him a failure or accusing him of stealing jokes, reflecting his frustration.
+celebrity       = "yes"  # Comedians like Ali often attend media events and shows, which can heighten the stakes of their professional conflicts.
+"""
+
+"""
+    plot_first_scene= "In a nursing room, Ali, a man, tells Bob, his wife, that he wants to have a child."
+
+ali_skill       = "no"   # It's not relevant for Ali to explain or brag about his skills in this context, as the focus is on a personal conversation about having a child.
+competition     = "no"   # There is no competition implied between Ali and Bob; their relationship is more personal than professional.
+have_met_many   = "yes"  # Ali and Bob are likely familiar with each other as they are married, which suggests a deep understanding of each other's perspectives.
+aint_you_ashamed= "yes"  # A conflict could arise if Bob has reservations about having a child, leading to differing opinions on family planning.
+insulting       = "irresponsible, selfish, immature"  # If they argue, Bob might call Ali irresponsible or selfish for wanting to have a child without considering their circumstances.
+celebrity       = "no"   # This scenario does not suggest that either character is involved in a profession that typically leads to media events or celebrity status.
+"""
+
+"""
+    plot_first_scene= "Fine dining chef Ali has a strong sense of pride and turns away customers who don't treat the restaurant where he works as a fine dining establishment. The restaurant owner Bob gets angry at Ali."
+
+
+ali_skill       = "yes" # It's natural for Ali to explain his skills, as he may feel desperate to prove himself to Bob.
+competition     = "" # No indication that they are in the same competition; the focus is on casting.
+have_met_many   = "yes" # They likely know each other, as Ali's threat suggests a prior relationship.
+aint_you_ashamed= "yes" # A conflict can arise from differing views on talent and casting decisions.
+insulting       = "loser, talentless hack, washed-up actor" # Bob might insult Ali if they argue about his worthiness for the role.
+celebrity       = "yes" # Actors like Ali are often invited to media events, highlighting their public persona.
+same_job        = "no" # Ali is an actor while Bob is a director; they have different roles in the industry.
+ali_rich        = "" # No specific information indicating Ali's financial status relative to others.
+ali_noble       = "" # No evidence suggests Ali is uninformed about pop culture; he could be aware but frustrated.
+sad_past        = "yes" # Mentioning a sad past can add depth to Ali's character and justify his emotional state.
+bad_mood        = "yes" # It's plausible for Ali to comment on team morale, especially if he feels isolated or undervalued.
+
+"""
+
+######################################################################################################################################################################################
+'''
+def gallower_br(): # Don't use google gemini for this.
+
+    plot_first_scene = "Actor Ali threatens director Bob that he will commit suicide if he doesn't cast him in the lead role."
+
+
+    # Start answer with ```python
+    # Let's think together about how this plot can/can't be developed after plot_first_scene.
+    # Please mark them with "yes" or "no" in the double quotes below. With short explanations.
+    # Reply with only the valuables and comments.
+
+    one_up          = "" # Can Ali make arrogant statements to anyone about his skills naturally?
+    wtf_is_my_reward= "" # Can Ali complains about his treatment naturally?
+    competition     = "" # Ali and Bob are in a same team in some competiton?
+    have_met_many   = "" # Do Ali and Bob know each other to some extent?
+    aint_you_ashamed= "" # Can Ali and Bob get into an argument and conflict because of a difference of opinion?
+    insulting       = "" # If aint_you_ashamde == "yes", write the insulting nouns that Bob would say to Ali, in this variable.
+    track_record    = "" # Can Ali naturally refer to his track record in order to defend himself/argument/promote himself?
+    celebrity       = "" # Are people in the same profession as Ali commonly invited to media and events?
+
+    answer_exam_1="""
+    one_up          = "no"  # Ali's desire for a child is a vulnerable topic; making arrogant statements would undermine his sincerity.
+    wtf_is_my_reward= "yes" # Ali might feel frustrated with Bob's response or their current situation, leading to complaints about how he feels treated.
+    competition     = "no"  # The focus is on their personal relationship and future plans rather than competition; they are partners, not rivals.
+    have_met_many   = "yes" # They're a couple.
+    aint_you_ashamed= "yes" # Differences in opinions about parenting or readiness could lead to conflict, highlighting their contrasting views.
+    insulting       = "childish, irresponsible, selfish"  # If they argue, Bob might use these terms to express frustration with Ali's perceived immaturity regarding parenthood.
+    track_record    = "no"  # In this context, discussing a track record may seem out of place; the focus should be on emotional readiness rather than past achievements.
+    celebrity       = "no"  # The narrative seems to center on personal lives rather than professional fame; being invited to media events isn't relevant here.
+    """
+    answer_exam_2="""
+    one_up          = "yes"  # Given Ali's arrogance, he may make bold statements about his comedic skills, even if they aren't backed by success.
+    wtf_is_my_reward= "yes"  # Ali can express frustration about his treatment by the agency and manager, feeling that he deserves better recognition.
+    competition     = "no"   # The focus is on Ali's personal struggles rather than competition; he is more likely to be in conflict with his manager than in a team setting.
+    have_met_many   = "yes"  # They're a comedian and a manager.
+    aint_you_ashamed= "yes"  # Ali's arrogance and controversial jokes could lead to conflicts with others, especially if they challenge his approach or ethics.
+    insulting       = "unfunny, hack, delusional"
+    track_record    = "yes"   # Ali may use his limited track record to defend himself.
+    celebrity       = "yes"  # comedians are commonly invited to media and events.
+    """
+
+    allowed=[]
+
+    if one_up           == "yes" : allowed.extend(["agree_different_levels", "agree_found_it_easy", "there_is_the_knack"])
+    if wtf_is_my_reward == "yes" : allowed.extend(["agree_only"])
+    if competition      == "yes" : allowed.extend(["agree_one_sided"])
+    if have_met_many    == "yes" : allowed.extend(["saraba_painter"])
+    if aint_you_ashamed == "yes" : allowed.extend(["pumpkin_self_defense"])
+    if track_record     == "yes" : allowed.extend(["different_fear_cheer", "different_fanmian_teacher", "agent_dont"])
+    if celebrity        == "yes" : allowed.extend(["lowbrow_place", "petty_event1", "petty_event2", "petty_news"])
+    if insulting                 : allowed.extend([f"different_genre({insulting})"])
+
+    print(allowed)
+
+
+
+actor_commercial_actor="""
+    plot_first_scene = "Actor Ali threatens director Bob that he will commit suicide if he doesn't cast him in the lead role."
+
+one_up          = "no" # Ali's threat of suicide is a serious matter and does not lend itself to arrogant insults.
+wtf_is_my_reward= "yes" # Ali can naturally complain about his treatment as he feels desperate for the role.
+competition     = "no" # The scene indicates a power struggle rather than teamwork in a competition.
+have_met_many   = "yes" # Ali and Bob likely know each other, given the context of the threat and casting discussion.
+aint_you_ashamed= "yes" # Bob could ask Ali if he's ashamed, as it reflects on the seriousness of the situation.
+insulting       = "coward, weakling" # If Bob were to insult Ali, he might use terms like 'coward' or 'weakling' to emphasize his disdain.
+track_record    = "yes" # Ali can refer to his track record to defend himself, arguing he deserves the role based on past performances.
+celebrity       = "yes" # Actors like Ali are often invited to media events, indicating a common practice in their profession.
+"""
+
+
+
+nursing_room="""
+one_up          = "no"  # Ali's desire for a child is a vulnerable topic; making arrogant statements would undermine his sincerity.
+wtf_is_my_reward= "yes" # Ali might feel frustrated with Bob's response or their current situation, leading to complaints about how he feels treated.
+competition     = "no"  # The focus is on their personal relationship and future plans rather than competition; they are partners, not rivals.
+have_met_many   = "yes" # Ali and Bob likely have a history together, which can add depth to their discussions about having a child.
+aint_you_ashamed= "yes" # Differences in opinions about parenting or readiness could lead to conflict, highlighting their contrasting views.
+insulting       = "childish, irresponsible, selfish"  # If they argue, Bob might use these terms to express frustration with Ali's perceived immaturity regarding parenthood.
+track_record    = "no"  # In this context, discussing a track record may seem out of place; the focus should be on emotional readiness rather than past achievements.
+celebrity       = "no"  # The narrative seems to center on personal lives rather than professional fame; being invited to media events isn't relevant here.
+"""
+
+
+comedian_clown="""
+plot_first_scene = "Ali is an unsuccessful comedian whose controversial jokes, ambition and arrogance put him at odds with his manager and agency."
+one_up          = "yes"  # Ali's arrogance and ambition suggest he could naturally one-up or insult others, especially in a comedic context.
+wtf_is_my_reward= "yes"  # Given his unsuccessful career and controversial jokes, Ali would likely feel mistreated and complain about it.
+competition     = "no"   # The plot does not indicate that Ali and Bob are part of the same team in any competition.
+have_met_many   = "yes"  # As colleagues in the comedy scene, it is likely that Ali and Bob know each other to some extent.
+aint_you_ashamed= "yes"  # Bob could naturally confront Ali about his behavior, asking questions like 'Aren't you ashamed?' given their dynamic.
+praised         = "yes"  # Ali can refer to past praise as a defense mechanism during arguments or when justifying his actions.
+celebrity       = "yes"  # Comedians often attend media events and are invited to various gatherings within their profession.
+"""
+
+
+
+
+
+
+
+def gallower1():
+    sad_past        = ""
+    compliment      = ""
+    celebrity       = ""
+
+    #####################################################
+
+    task_format="""
+    plot_first_scene = ""
+    # Start answer with ```python
+    # please mark them with "yes" or "no" in the double quotes below. With short explanations.
+    sad_past        = "" # After plot_first_scene, in the course of an argument/apology/self-defense, would it be natural for him to do the following: Ali mentions sad things from his past (divorce, debts, etc.).
+    compliment      = "" # After plot_first_scene, in the course of an argument/apology/self-defense, would it be natural for him to do the following: Ali mentions praise he received in the past.
+    celebrity       = "" # Is Ali's occupation the kind of occupation that gets him invited to media and events?
+
+    """
+
+    task_exam1="""
+    plot_first_scene= "Ali is an unsuccessful comedian whose controversial jokes, ambition and arrogance put him at odds with his manager and agency."
+
+    your responce:
+    ```python
+    sad_past        = "yes" # Ali may point out that his sad past led him to have a policy on controversial jokes.
+    compliment      = "yes" # Ali might defend himself by pointing to the few accolades he has received in the past.
+    celebrity       = "yes" # Comedians are entertainers.
+    ```
+    """
+
+    task_exam2="""
+    plot_first_scene= "In a nursing room, Ali, a man, tells a woman that he wants to have a child."
+
+    your responce:
+    ```python
+    sad_past        = "yes" # Any talk of family planning inevitably brings up stories of Ali's debt and abuse history.
+    compliment      = "no" # The praise Ali has received in the past for talking about family planning is irrelevant.
+    celebrity       = "no" # No information about Ali's occupation has been given.
+    ```
+    """
+
+    task_exam3="""
+    plot_first_scene= "Actor Ali storms into the director's office to protest against him rejecting his audition, threatening to die if he isn't given the lead role."
+
+    your responce:
+    ```python
+    sad_past        = "yes" # If Ali is a debtor, it makes sense that his enthusiasm for auditions would be off the charts.
+    compliment      = "yes" # When Ali makes the case that he deserves the lead role, it's only natural that he would point to the praise he's received in the past.
+    celebrity       = "yes" # Actors are entertainers.
+    ```
+    """
+
+    task_exam4 = """
+    plot_first_scene= "Chef Ali has a strong sense of pride and turns away customers who don't treat the restaurant where he works as a fine dining establishment. The restaurant owner gets angry at Ali."
+
+    your responce:
+    ```python
+    sad_past        = "yes" # Ali's pride in his work may stem from a difficult past, such as struggles in his career or personal life that make him value respect and quality.
+    compliment      = "yes" # In defending his actions, Ali might reference past praise he has received for his culinary skills or the restaurant's reputation.
+    celebrity       = "no" # Being a chef isn't typically a job that involves events and media appearances.
+    ```
+    """
+
+    task_exam5 = """
+    plot_first_scene= "A psychopathic criminal, dressed like Batman's Joker, talks to his victims."
+    your responce:
+    ```python
+    sad_past        = "yes" # The criminal may reveal a tragic backstory that explains his psychopathic behavior, drawing sympathy or understanding from his victims.
+    compliment      = "no" # It is unlikely that the criminal would mention any past praise as it doesn't fit the context of his character.
+    celebrity       = "no" # While the character's appearance might evoke a celebrity-like persona, being a criminal typically does not involve invitations to media or events.
+    ```
+    """
+
+    task_you_do = """
+    plot_first_scene = "  "
+    """
+
+    #####################################################
+
+
+
+
+
+
+
+    #####################################################
+
+    allowed=[]
+
+    if sad_past:
+      allowed.extend(["SadPast"])
+    if compliment:
+      allowed.extend(["different_fanmian_teacher"])
+    if celebrity:
+      allowed.extend(["lowbrow_place", "petty_event1", "petty_event2", "why_was_this_one_invited"])
+
+#    if little_skill:
+#      allowed.extend(["there_is_the_knack", "agree_found_it_easy", "agree_different_levels", "agree_only", "agree_one_sided"])
+#    if am_i_a_stupid:
+#      allowed.extend(["different_genre"])
+
+    print(allowed)
+
+gallower1()
+
+
+'''
