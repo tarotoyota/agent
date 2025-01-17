@@ -13,6 +13,9 @@ def coloring(text):
     r'Ali': r'<span style="color: #FAC700;">Ali</span>',
     r'Bob': r'<span style="color: #57FA00;">Bob</span>',
     r'Cho': r'<span style="color: #46b9ff;">Cho</span>',
+    r'\+s\+': r'<span style="color: #ff47c8;">+s+</span>',
+    r'\+l\+': r'<span style="color: #ff47c8;">+l+</span>',
+    r'\+f\+': r'<span style="color: #ff47c8;">+f+</span>',
     }
     for pattern, styled_span in patterns.items():
         text = re.sub(pattern, styled_span, text)
@@ -127,44 +130,39 @@ def agent_func():
     pressure1=[ "Bob, a Mom-and-pop restaurant owner, offers Ali free meal.","Bob, a landlord, generously waits for Ali to pay her overdue rent.","Bob, a employer, offers Ali a flexible part-time job.","Bob, a professional, offers Ali the training.","Bob, Ali's girlfriend's father, allows them to marry.","Bob, a kind taxi driver, gives Ali free rides to job interviews.","Bob, a wealthy investor, provides Ali with startup funding."]
 
     for i in agent_inst.Agent.ALL_AGENT:
-        col_grade, col_effort, col_suffer, col_action, col_appear, col_pressure1, col_pressure2, col_pressure3, col_pressure4, col_revealer, col_rephrase, col_imposing, col_slump, col_cant, col_too_slow, col_garnishallow, col_charity, col_rev_adj = [],[], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], []
+        col_grade, col_effort, col_suffer, col_action, col_appear, col_pressure1, col_pressure2, col_pressure3, col_brand, col_revealer, col_rephrase, col_imposing, col_slump, col_cant, col_too_slow, col_garnishallow, col_charity, col_rev_adj, col_southpaw, col_pressure = [],[], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], [], []
 
         col_too_late= []
         col_modifier= []
 
-        if i.agent_name                  :col_grade              .append(f"<tr><th id='th_cyan'>instance_name           </th><th id='th_cyan'>{i.agent_name}                                        </th></tr>")
-        if i.s_Grade.hypo_s              :col_grade              .append(f"<tr><th id='th_cyan'>hypo_s                  </th><td>{make_arg_1_list(i.s_Grade.hypo_s                  )}              </td></tr>")
-        if i.s_AbnormalCliche            :col_grade              .append(f"<tr><th id='th_cyan'>hypo_s(AbnormalCliche)  </th><td>{make_arg_1_list(i.s_AbnormalCliche.cliche_agent   )} in .hypo_s   </td></tr>")
-        if i.s_Grade.hypo_s_pn           :col_grade              .append(f"<tr><th id='th_cyan'>hypo_s_pn               </th><td>{make_arg_1_list(i.s_Grade.hypo_s_pn               )}              </td></tr>")
-        if i.s_Grade.hypo_i              :col_grade              .append(f"<tr><th id='th_cyan'>hypo_i                  </th><td>{make_arg_1_list(i.s_Grade.hypo_i                  )}              </td></tr>")
-        if i.s_AbnormalCliche            :col_grade              .append(f"<tr><th id='th_cyan'>hypo_i(AbnormalCliche)  </th><td>{make_arg_1_list(i.s_AbnormalCliche.abnormal       )}              </td></tr>")
-        if i.s_AbnormalCliche            :col_grade              .append(f"<tr><th id='th_cyan'>hypo_i(AbnormalCliche)  </th><td>{make_arg_1_list(i.s_AbnormalCliche.cliche_agent   )} in .hypo_i   </td></tr>")
-        if i.s_Grade.hypo_i_pn           :col_grade              .append(f"<tr><th id='th_cyan'>hypo_i_pn               </th><td>{make_arg_1_list(i.s_Grade.hypo_i_pn               )}              </td></tr>")
-
-        if i.s_Binary2.appear            :col_appear             .append(f"<tr><th id='th_cyan'>Appear                  </th><td>{make_arg_1_list(i.s_Binary2.appear             )}</td></tr>")
-        if i.s_Binary2.action            :col_action             .append(f"<tr><th id='th_cyan'>Action                  </th><td>{make_arg_1_list(i.s_Binary2.action             )}</td></tr>")
-        if i.s_AbnormalCliche            :col_action             .append(f"<tr><th id='th_cyan'>Action(AbnormalCliche)  </th><td>{make_arg_1_list(i.s_AbnormalCliche.cliche      )}</td></tr>")
-        if i.s_Binary2.suffer            :col_suffer             .append(f"<tr><th id='th_cyan'>Suffer                  </th><td>{make_arg_1_list(i.s_Binary2.suffer             )}</td></tr>")
-        if i.s_Binary2.effort            :col_effort             .append(f"<tr><th id='th_cyan'>Effort                  </th><td>{make_arg_1_list(i.s_Binary2.effort             )}</td></tr>")
-        if i.s_Binary2.slump             :col_slump              .append(f"<tr><th id='th_cyan'>Slump                   </th><td>{make_arg_1_list(i.s_Binary2.slump              )}</td></tr>")
-
-        if i.s_rephrase                  :col_rephrase           .append(f"<tr><th id='th_cyan'>rephrase        </th><td>{make_arg_1_list(i.s_rephrase                  )}</td></tr>")
-        if i.s_Pressure                  :col_pressure1          .append(f"<tr><th id='th_cyan'>pressure1       </th><td>{make_arg_1_list(pressure1                     )}</td></tr>")
-        if i.s_Pressure                  :col_pressure2          .append(f"<tr><th id='th_cyan'>pressure2       </th><td>{make_arg_1_list(i.s_Pressure.pressure2        )}</td></tr>")
-        if i.s_Pressure                  :col_pressure3          .append(f"<tr><th id='th_cyan'>pressure3       </th><td>{make_arg_1_list(i.s_Pressure.pressure3        )}</td></tr>")
-        if i.s_Binary2.brand             :col_pressure4          .append(f"<tr><th id='th_cyan'>pressure4       </th><td>{make_arg_1_list(i.s_Binary2.brand             )}</td></tr>")
-
-        if i.s_revealer                  :col_revealer           .append(f"<tr><th id='th_cyan'>revealer        </th><td>{make_arg_1_list(i.s_revealer                  )}</td></tr>")
-        if i.s_Binary2.rev_adj           :col_rev_adj            .append(f"<tr><th id='th_cyan'>rev_adj         </th><td>{i.s_Binary2.rev_adj                            }</td></tr>")
-
-
-        if i.s_Binary2.too_late          :col_too_late           .append(f"<tr><th id='th_cyan'>too_late        </th><td>{i.s_Binary2.too_late                           }</td></tr>")
-        if i.s_Binary2.modifier          :col_modifier           .append(f"<tr><th id='th_cyan'>modifier        </th><td>{i.s_Binary2.modifier                           }</td></tr>")
-        if i.s_Binary2.just_a            :col_imposing           .append(f"<tr><th id='th_cyan'>imposing        </th><td>{make_arg_1_list(i.s_Binary2.just_a            )}</td></tr>")
-        if i.s_Binary2.charity           :col_charity            .append(f"<tr><th id='th_cyan'>charity         </th><td>{make_arg_1_list(i.s_Binary2.charity           )}</td></tr>")
-
-
-        if i.s_GarnishAllow.allowed_garnish:col_garnishallow     .append(f"<tr><th id='th_cyan'>allowed_garnish </th><td>{i.s_GarnishAllow.allowed_garnish               }</td></tr>")
+        if i.agent_name                  :col_grade              .append(f"<tr><th id='th_cyan'>instance_name           </th><th id='th_cyan'>{i.agent_name         }               </th></tr>")
+        if i.s_Grade.hypo_s              :col_grade              .append(f"<tr><th id='th_cyan'>hypo_s                  </th><td>{i.s_Grade.hypo_s                  }               </td></tr>")
+        if i.s_AbnormalCliche            :col_grade              .append(f"<tr><th id='th_cyan'>hypo_s(AbnormalCliche)  </th><td>{i.s_AbnormalCliche.cliche_agent   } in .hypo_s    </td></tr>")
+        if i.s_Grade.hypo_s_pn           :col_grade              .append(f"<tr><th id='th_cyan'>hypo_s_pn               </th><td>{i.s_Grade.hypo_s_pn               }               </td></tr>")
+        if i.s_Grade.hypo_i              :col_grade              .append(f"<tr><th id='th_cyan'>hypo_i                  </th><td>{i.s_Grade.hypo_i                  }               </td></tr>")
+        if i.s_AbnormalCliche            :col_grade              .append(f"<tr><th id='th_cyan'>hypo_i(AbnormalCliche)  </th><td>{i.s_AbnormalCliche.abnormal       }               </td></tr>")
+        if i.s_AbnormalCliche            :col_grade              .append(f"<tr><th id='th_cyan'>hypo_i(AbnormalCliche)  </th><td>{i.s_AbnormalCliche.cliche_agent   } in .hypo_i    </td></tr>")
+        if i.s_Grade.hypo_i_pn           :col_grade              .append(f"<tr><th id='th_cyan'>hypo_i_pn               </th><td>{i.s_Grade.hypo_i_pn               }               </td></tr>")
+        if i.s_Binary2.appear            :col_appear             .append(f"<tr><th id='th_cyan'>Appear                  </th><td>{i.s_Binary2.appear                }               </td></tr>")
+        if i.s_Binary2.action            :col_action             .append(f"<tr><th id='th_cyan'>Action                  </th><td>{i.s_Binary2.action                }               </td></tr>")
+        if i.s_AbnormalCliche            :col_action             .append(f"<tr><th id='th_cyan'>Action(AbnormalCliche)  </th><td>{i.s_AbnormalCliche.cliche         }               </td></tr>")
+        if i.s_Binary2.suffer            :col_suffer             .append(f"<tr><th id='th_cyan'>Suffer                  </th><td>{i.s_Binary2.suffer                }               </td></tr>")
+        if i.s_Binary2.effort            :col_effort             .append(f"<tr><th id='th_cyan'>Effort                  </th><td>{i.s_Binary2.effort                }               </td></tr>")
+        if i.s_Binary2.slump             :col_slump              .append(f"<tr><th id='th_cyan'>Slump                   </th><td>{i.s_Binary2.slump                 }               </td></tr>")
+        if i.s_rephrase                  :col_rephrase           .append(f"<tr><th id='th_cyan'>rephrase                </th><td>{i.s_rephrase                      }               </td></tr>")
+#       if i.s_Pressure                  :col_pressure1          .append(f"<tr><th id='th_cyan'>pressure1               </th><td>{pressure1                         }               </td></tr>")
+#       if i.s_Pressure                  :col_pressure2          .append(f"<tr><th id='th_cyan'>pressure2               </th><td>{i.s_Pressure.pressure2            }               </td></tr>")
+#       if i.s_Pressure                  :col_pressure3          .append(f"<tr><th id='th_cyan'>pressure3               </th><td>{i.s_Pressure.pressure3            }               </td></tr>")
+        if i.s_Binary2.pressure          :col_pressure           .append(f"<tr><th id='th_cyan'>pressure4               </th><td>{i.s_Binary2.pressure              }               </td></tr>")
+        if i.s_Binary2.brand             :col_brand              .append(f"<tr><th id='th_cyan'>pressure4               </th><td>{i.s_Binary2.brand                 }               </td></tr>")
+        if i.s_revealer                  :col_revealer           .append(f"<tr><th id='th_cyan'>revealer                </th><td>{i.s_revealer                      }               </td></tr>")
+        if i.s_Binary2.rev_adj           :col_rev_adj            .append(f"<tr><th id='th_cyan'>rev_adj                 </th><td>{i.s_Binary2.rev_adj               }               </td></tr>")
+        if i.s_Binary2.too_late          :col_too_late           .append(f"<tr><th id='th_cyan'>too_late                </th><td>{i.s_Binary2.too_late              }               </td></tr>")
+        if i.s_Binary2.modifier          :col_modifier           .append(f"<tr><th id='th_cyan'>modifier                </th><td>{i.s_Binary2.modifier              }               </td></tr>")
+        if i.s_Binary2.just_a            :col_imposing           .append(f"<tr><th id='th_cyan'>imposing                </th><td>{i.s_Binary2.just_a                }               </td></tr>")
+        if i.s_Binary2.charity           :col_charity            .append(f"<tr><th id='th_cyan'>charity                 </th><td>{i.s_Binary2.charity               }               </td></tr>")
+        if i.s_Binary2.southpaw          :col_southpaw           .append(f"<tr><th id='th_cyan'>southpaw                </th><td>{i.s_Binary2.southpaw              }               </td></tr>")
+        if i.s_GarnishAllow.allowed_garnish:col_garnishallow     .append(f"<tr><th id='th_cyan'>allowed_garnish         </th><td>{i.s_GarnishAllow.allowed_garnish  }               </td></tr>")
 
         base.append(f"""<table id="{i.agent_name}">
         {"".join(col_grade)}
@@ -175,10 +173,8 @@ def agent_func():
         {"".join(col_slump)}
 
         {"".join(col_rephrase)}
-        {"".join(col_pressure1)}
-        {"".join(col_pressure2)}
-        {"".join(col_pressure3)}
-        {"".join(col_pressure4)}
+        {"".join(col_pressure)}
+        {"".join(col_brand)}
 
         {"".join(col_revealer)}
         {"".join(col_rev_adj)}
@@ -189,6 +185,7 @@ def agent_func():
         {"".join(col_modifier  )}
         {"".join(col_imposing)}
         {"".join(col_charity)}
+        {"".join(col_southpaw)}
 
         {"".join(col_garnishallow  )}
 
